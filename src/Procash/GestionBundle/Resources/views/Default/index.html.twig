@@ -1,0 +1,81 @@
+{% extends '::base.html.twig' %}
+{% block stylesheets %}
+    {{ parent() }}
+    {#    <link rel="stylesheet" href="{{ asset('bundles/Gestionbundle/css/saisie.css') }}" type="text/css" />#}
+    <style>
+
+        #cadre {
+            width:900px;
+            height: 500px;
+            margin:0 auto;
+            padding:10px;
+            background:none;
+            /*border:1px solid #DDD;*/
+            border-radius:5px;
+            -webkit-border-radius:5px;
+            -moz-border-radius:5px;
+            margin-top: 80px;
+        }
+
+        .nav-pills > li.active > a, .nav-pills > li.active > a:focus, .nav-pills > li.active > a:hover {
+            background-color: #d0101c !important;
+            color: #fff;
+        }
+
+        .dataTables_wrapper {
+            background-color : #fff!important;
+        }
+
+        .inputTableau {
+            border: 0 none transparent;
+        }
+    </style>
+    <link rel="stylesheet" href="{{ asset('bundles/communs/css/jquery.dataTables.min.css') }}" type="text/css" /> 
+{% endblock %}
+
+{% block body %}
+    {{ parent()}}
+    <div class="container" style="margin-top:15px;">
+        <div class="col-md-6 col-xs-12"><!-- col-1 -->
+            <div class="form-group">
+                <label class="col-sm-2 col-md-5 control-label " style="margin-left:-67px; margin-right:-80px;  margin-top: 5px;"> <span style=" font-weight: bold;color:#000;margin-left: 70px;"> Réseaux</span> </label>
+                <div class="col-sm-10 col-md-7">
+                    <select class="form-control input-sm selectReseau"  id="selectReseau" name="selectReseau" style="margin-left: 20px;"> 
+                        {% for reseau in listeReseau %}                               
+                            <option value="{{ reseau.id }}">{{ reseau.libelle }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+            </div>
+        </div><!--- // col-1 -->
+        <div class="col-md-6 col-xs-12"><!-- col-1 -->
+            <div class="form-group">
+                <label class="col-sm-2 col-md-5 control-label " style="margin-left:-67px; margin-right:-80px; margin-top: 5px;"> <span style=" font-weight: bold;color:#000; margin-left: -29px;"> Clients</span> </label>
+                <div class="col-sm-10 col-md-7 placeClient" style=" right: 56px;">
+                    <select class="form-control input-sm selectClient"  style="margin-left: -20px;" id="selectClient" name="selectClient">
+                        {#                             {% for reseau in listeReseau %}#}
+                        <option value="{#{{ reseau.id }}#}">{#{{ reseau.libelle }} {{ reseau.libelle }}#}</option>
+                        {#                            {% endfor %}#}
+                    </select>
+                </div>
+
+            </div>
+        </div><!--- // col-1 -->
+    </div>
+
+    <div class="container reportingView" id="showReport" style="margin-top:5px;">
+        <img scr="{{ asset('bundles/communs/images/ajax-loader.gif')}}"/>
+    </div>
+
+{% endblock %}
+
+{% block javascripts %}
+    {{parent()}}
+    <script type="text/javascript">
+        var urlChangeReseau = '{{path('ajax_saisie_changer_reseau')}}';
+        var urlChangerClient = '{{path('ajax_saisie_changer_client')}}';
+    </script>
+    <script src="{{ asset('bundles/GestionBundle/js/ecranQuotidien.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('bundles/GestionBundle/js/saisie.js') }}" type="text/javascript"></script>       
+{% endblock %}

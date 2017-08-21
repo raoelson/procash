@@ -1,0 +1,38 @@
+procash_menu_homepage:
+    path:     /
+    defaults: { _controller: ProcashAdministrationBundle:Default:index }
+procash_erreur:
+    path:     /erreur
+    defaults: { _controller: ProcashAdministrationBundle:Default:erreur }
+administration:
+    path:     /administration
+    defaults: { _controller: ProcashAdministrationBundle:Default:index }
+procash_profil:
+    resource: "@ProcashAdministrationBundle/Resources/config/profil/routing.yml"
+    prefix:   /administration
+procash_referentiel_type_paiement:
+    resource: "@ProcashAdministrationBundle/Resources/config/typepaiement/routing.yml"
+    prefix:   /referentiel
+procash_referentiel_motif_fermeture:
+    resource: "@ProcashAdministrationBundle/Resources/config/motiffermeture/routing.yml"
+    prefix:   /referentiel
+procash_referentiel_delai_fermeture:
+    resource: "@ProcashAdministrationBundle/Resources/config/delaifermeture/routing.yml"
+    prefix:   /referentiel
+procash_titre:
+    resource: "@ProcashAdministrationBundle/Resources/config/titre/routing.yml"
+    prefix:   /administration
+procash_referentiel_produit:
+    resource: "@ProcashAdministrationBundle/Resources/config/produit/routing.yml"
+    prefix:   /referentiel
+procash_reseau_client:
+    resource: "@ProcashAdministrationBundle/Resources/config/reseau_client/routing.yml"
+    prefix:   /referentiel
+procash_banque:
+    resource: "@ProcashAdministrationBundle/Resources/config/banque/routing.yml"
+    prefix:   /referentiel
+    
+procash_gestion_version:
+    resource: "@ProcashAdministrationBundle/Resources/config/gestionversion/routing.yml"
+    prefix:   /administration
+

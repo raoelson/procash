@@ -1,0 +1,231 @@
+<div class="modal-header modal-header-default">
+    <div style="text-align:center">     
+        <label style="font-size:18px;">Utilisateur</label>
+    </div>
+    <br />
+    <h4 class="modal-title">Modification d'un utilisateur</h4>
+</div>
+<div class="modal-body">
+    <form method="post" action="{{ path('modifier_utilisateur',{ 'id' : user.id }) }}"  class="form-horizontal">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group" id="contenairLogin">
+                    <label for="code" class="col-sm-4 control-label"  style="color:black !important;"> {#{{ form_label(form.username) }}#}Login<b style="color:red">*</b> :                    
+                    </label>    
+                    <div class="col-sm-8">
+                        {{ form_widget(form.username , {'attr': {'class': 'form-control input-sm','placeholder':'Login'} } ) }}
+                        <span id="imgelogin" class="glyphicon glyphicon-warning-sign form-control-feedback hide" style="color:#DA4939"></span>
+                    </div>
+                </div>
+                <div class="col-sm-12 no-padding container " >
+                    <div class="form-group afficherErreurLogin hide" style="margin-left: 8px;">
+                        <div class="alert alert-danger" role="alert" style="margin: -11px 0px -11px 146px; padding-bottom: 1px; padding-left: 3px; padding-top: 0px; width: 233px; height: 21px;"><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                            <label style=" font-size: 13px;">
+                                Login déjà existant.
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="nom" class="col-sm-4 control-label">  {{ form_label(form.nom) }}<b style="color:red">*</b> :</label>
+                    <div class="col-sm-8">
+                        {{ form_widget(form.nom) }}
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="nom" class="col-sm-4 control-label pull-left" style="color:black !important;"> Prénom<b style="color:red">*</b> :                     
+                    </label>
+                    <div class="col-sm-8">
+                        {{ form_widget(form.prenom, {'attr': {'class': 'form-control input-sm ','placeholder':'Prenom'} } )  }}                          
+                        </span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="nom" class="col-sm-4 control-label pull-left" style="color:black !important;"> Profil<b style="color:red">*</b> :                     
+                    </label>
+                    <div class="col-sm-8">
+                        <select class="form-control" id="selectProfil" name="selectProfil" placeholder="Choisir un profil ..." required="required">
+                            <option></option>
+                            {% for profil in listeProfil %}
+                                {% if user.profil is not null and user.profil.id is not null %}
+                                    <option value="{{profil.id}}__{{profil.libelle}}" {% if user.profil.id == profil.id %}selected="selected" {%endif%}>{{profil.libelle}}
+                                    </option>
+                                {% else %}
+                                    <option value="{{profil.id}}__{{profil.libelle}}">{{profil.libelle}}
+                                    </option>
+                                {% endif %}
+                            {%endfor%}
+                        </select>                       
+
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="selectReseau" class="col-sm-4 control-label pull-left" style="color:black !important;"> Réseau<b style="color:red">*</b> :                     
+                    </label>
+                    <div class="col-sm-8">
+                        <select class="form-control" id="selectReseau" name="selectReseau" placeholder="Choisir un réseau ..." required="required">
+                            <option></option>
+                            {% for reseau in listeReseau %}
+                                <option value="{{reseau.id}}" {% if user.reseau is not null %}   {% if user.reseau.id == reseau.id  %}selected="selected" {%endif%}{% endif %}>{{reseau.libelle}}
+                                </option>
+
+                            {%endfor%}
+                        </select>                       
+
+                    </div>
+                </div>
+
+            </div>
+            <div class="col-md-6">
+                <div class="form-group" id="contenairEmail">
+                    <label for="nom" class="col-sm-4 control-label pull-left" style="color:black !important;">   {{ form_label(form.email) }}<b style="color:red">*</b> :
+                        <small class="hide" id="msg-erreur" style='display: block; color:red;font-size:9px'></small>
+                    </label>
+                    <div class="col-sm-8">
+                        {{ form_widget(form.email, {'attr': {'class': 'form-control input-sm ','placeholder':'E-mail'} } )  }}
+                        <span id="imgemail" class="glyphicon glyphicon-warning-sign form-control-feedback hide" style="color:#DA4939">                            
+                        </span>
+                    </div>
+                </div>
+                <div class="col-sm-12 no-padding container " >
+                    <div class="form-group afficherErreurEmail hide" style="margin-left: 8px;">
+                        <div class="alert alert-danger" role="alert" style="margin: -11px 0px -11px 146px; padding-bottom: 1px; padding-left: 3px; padding-top: 0px; width: 233px; height: 21px;"><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                            <label style=" font-size: 13px;">
+                                Adresse e-mail non valide.
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group afficherErreurEmailEx hide" style="margin-left: 8px;">
+                        <div class="alert alert-danger" role="alert" style="margin: -11px 0px -11px 146px; padding-bottom: 1px; padding-left: 3px; padding-top: 0px; width: 233px; height: 21px;"><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                            <label style=" font-size: 13px;">
+                                Adresse e-mail déjà existant.
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="telephone" class="col-sm-4 control-label">  {{ form_label(form.telephone) }} :</label>
+                    <div class="col-sm-8">
+                        {{ form_widget(form.telephone) }}
+                    </div>
+                </div>
+                <div id="erreurTelephone" class="col-md-offset-6 col-md-6 alert alert-danger hide" role="alert" style="padding: 0px !important;margin-bottom: 4px;margin-top: -13px;">
+                    <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                    <label style=" font-size: 13px;">
+                        Téléphone nom valide
+                    </label>
+                </div>
+                <div class="form-group">
+                    <label for="telephonePortable" class="col-sm-4 control-label">  {{ form_label(form.telephonePortable) }} :</label>
+                    <div class="col-sm-8">
+                        {{ form_widget(form.telephonePortable) }}
+                    </div>
+                </div>
+                <div id="erreurTelephonePortable" class="col-md-offset-5 col-md-7 alert alert-danger hide" role="alert" style="padding: 0px !important;margin-bottom: 4px;margin-top: -13px;">
+                    <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                    <label style=" font-size: 13px;">
+                        Téléphone portable non valide
+                    </label>
+                </div>
+                <div class="row-fluid containerMDP" style="margin-top:5px" id="contenairMdp">
+                    <div class="form-group">
+                        <label for="nom" class="col-sm-4 control-label pull-left"> </label>
+                        <div class="col-sm-8">
+                            <div class="btn-group dropdown" id="btnn" style="margin-top:10px">
+                                <button type="button" class="btn btn-default changeMdp" id="lib" style="min-width:150px;">Changer mot de passe</button>
+                                <button type="button" class="btn btn-default dropdown-toggle changeMdp">
+                                    <span class="caret"></span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal hidden" id="errorMdp">
+                        <div class="modal-dialog">
+                            <div class="modal-content panel panel-danger">
+                                <div class="modal-header panel-heading">
+                                    <h4 class="modal-title">Erreur!</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <p id="modal-message" class="text-danger">Les deux mots de passe ne sont pas identiques.</p>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default btn-danger" data-dismiss="modal">OK</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="password" class="row-fluid" >
+                        {% if (form_errors(form.plainPassword.first)|length)!=0 %}
+                            {% set error="1" %}
+                        {% endif %}
+                        <div class="form-group" id="contenairMdp">
+                            <label for="procash_user_registration_plainPassword_first" id='lbMpd' class="col-sm-4 control-label pull-left">Mot de passe<b style="color:red">*</b> : </label>                            
+                            <div class="col-sm-8">
+                                <div id="containerPasswordFirst" class="procashFirst">
+                                    {{ form_widget(form.plainPassword.first, {'attr': {'class': 'form-control input-sm'}}) }}
+                                    <span id="imgmdp" class="glyphicon glyphicon-warning-sign form-control-feedback hide" style="color:#DA4939"></span>
+                                    {#<span id="inputError2Status" class="sr-only">(error)</span>#}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group"  id="contenairmdpsecond">
+                            <label for="procash_user_registration_plainPassword_second" id="mdpsecond" class="col-sm-4 control-label pull-left"> {# {{ form_label(form.plainPassword.second) }}#} Confirmation<b style="color:red">*</b> :</label>
+                            <div class="col-sm-8">
+                                <div id="containerPasswordFirst" class="">
+                                    {{ form_errors(form.plainPassword.second) }}
+                                    {{ form_widget(form.plainPassword.second, {'attr': {'class': 'form-control input-sm'}}) }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-12 no-padding container " >
+                        <div class="form-group afficherErreurPwd hide" style="margin-left: 8px;">
+                            <div class="alert alert-danger" role="alert" style="margin: -11px 0px -11px 58px; padding-bottom: 1px; padding-left: 3px; padding-top: 0px; width: 342px; height: 21px;"><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                <label style=" font-size: 13px;">
+                                    Au moins 6 caractères composés de chiffre et de lettre.
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-12 no-padding container " >
+                        <div class="form-group afficherErreurPwdSec hide" style="margin-left: 8px;">
+                            <div class="alert alert-danger" role="alert" style="margin: -11px 0px -11px 146px; padding-bottom: 1px; padding-left: 3px; padding-top: 0px; width: 233px; height: 21px;"><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                <label style=" font-size: 13px;">
+                                    Les mots de passe non identiques.
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="hide">{{ form_rest(form) }}</div>
+    </form>
+
+    {% for utilisateur in listeUserVerifLogin %}
+        <span class="listeMailUtilisateur hide ">{{ utilisateur.email }}</span>
+    {% endfor %}
+    {% for utilisateur in listeUserVerifLogin %}
+        <span class="listeLoginUtilisateur hide">{{ utilisateur.username }}</span>
+    {% endfor %}
+
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-default fermer" data-dismiss="modal">Annuler</button>
+    <button type="submit" class="btn btn-primary submitButtonModif enregister">Valider</button>
+</div>
+<script>
+    $('body').on('hidden.bs.modal', '.modal', function () {
+        $(this).removeData('bs.modal');
+        $('#modalModifierUser .modal-dialog .modal-content').html(' <div class="loading"><div class="" style="margin-left:42%;margin-bottom: 10px;margin-top:10px;"><img src="{{ asset('bundles/communs/images/ajax-loader.gif') }}"  > Chargement en cours...</div></div>');
+    });
+    var modif = true;
+
+</script>
+<script src="{{ asset('bundles/AdministrationBundle/Utilisateur/js/ajouter_utilisateur.js') }}" type="text/javascript"></script>
+<script src="{{ asset('bundles/AdministrationBundle/Utilisateur/js/modifier_utilisateur.js') }}" type="text/javascript"></script>

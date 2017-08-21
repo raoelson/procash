@@ -1,0 +1,65 @@
+<div class="modal-header modal-header-default">
+    <div style="text-align:left">        
+        <h4 class="modal-title" style="font-size:18px;">Ajouter une fermeture</h4>
+    </div>      
+</div>
+<form method="post" action="{{ path('procash_ajouter_fermeture') }}" id="formAjoutFermeture" class="form-horizontal">
+    <div class="modal-body">    
+        <div class="form-horizontal">
+            <div class="form-group">
+                <div class="col-sm-4 control-label">
+                    {{ form_label(form.client)}}<b style="color:red">*</b> :
+                </div>
+                <div  class="col-sm-6">
+                    {{ form_widget(form.client , {'attr': {'class': 'form-control input-sm' } } ) }}
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="dateFermeture" class="col-sm-4 control-label"  style="color:black !important;"> {{ form_label(form.dateDebutFermeture) }}<b style="color:red">*</b> :                      
+                </label>    
+                <div class="col-sm-6">
+                    {{ form_widget(form.dateDebutFermeture , {'attr': {'class': 'form-control input-sm','placeholder':'Date début'} } ) }}
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="nom" class="col-sm-4 control-label"> Date fin fermeture<b style="color:red">*</b> :</label>
+                <div class="col-sm-6"  style="margin-top: 5px;">
+                    {{ form_widget(form.dateFinFermeture, {'attr': {'class': 'form-control input-sm','placeholder':'Date fin'} } ) }}
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="periode" class="col-sm-4 control-label pull-left" style="color:black !important;"> {{ form_label(form.motifFermeture) }}<b style="color:red">*</b> :                     
+                </label>
+                <div class="col-sm-6">
+                    {{ form_widget(form.motifFermeture, {'attr': {'class': 'form-control input-sm ','placeholder':'Motif'} } )  }}        
+                </div>
+            </div>
+        </div>
+
+        <div class="hide">{{ form_rest(form) }}</div>
+    </div>
+    <div class="modal-footer" id="footerFermeture">
+
+        <button type="button" class="btn btn-default" data-dismiss="modal">Annuler</button>
+        <button type="button" class="btn btn-primary validerAjout" onclick="fnValidationFermeture()">Valider</button>
+    </div>
+
+</form>
+<script>
+    $('body').on('hidden.bs.modal', '.modal', function() {
+        $(this).removeData('bs.modal');
+        $('#myModalFermeture .modal-dialog .modal-content').html(' <div class="loading"><div class="" style="margin-left:42%;margin-bottom: 10px;margin-top:10px;"><img src="{{ asset('bundles/communs/images/ajax-loader.gif') }}"  > Chargement en cours...</div></div>');
+    });
+    {% if delaiFermeture|length > 0 and delaiFermeture is not null %}
+        {% for df in delaiFermeture %}
+            var seuil = {{df.delaiMin}};
+            var delaiMax = {{ df.seuilMax }};
+       {% endfor %}
+    {% else %}
+            var seuil = 'undefined';
+            var delaiMax = 'undefined';
+    {% endif %}
+</script>
+<script src="{{ asset('bundles/GestionBundle/js/Fermeture/ajouter_fermeture.js') }}" type="text/javascript"></script>
+</script>

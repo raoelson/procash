@@ -1,0 +1,93 @@
+{#<div class="modal-dialog" id="a_corriger">#}
+<style>
+    table#tableHistoriqueMontant {
+        background-color: #fff;
+    }
+</style>
+
+    <div class="modal-header modal-header-default">
+        <h4 class="modal-title">Historique des montants</h4>
+    </div> 
+
+    <div class="modal-body">
+        <div class="row" style="margin-top: 15px;">
+            {% if facturations|length%}
+                <table id="tableHistoriqueMontant" class="display" cellspacing="0" width="95%" style="margin-right: 26px;padding-left: 0px; margin-left: 16px;">
+                    <thead class="thead-inverse">                    
+                        <tr>
+                            <th>Montant</th>
+                            <th>Montant du</th>
+                            <th>Montant payé</th>
+                            <th>Login modif.</th>
+                            <th>Date saisie</th>
+                        </tr>                       
+                    </thead>
+                    <tbody>
+                        {% for f in facturations %}     
+                            <tr>
+                                <td>{{f.montantFacture}}</td>
+                                <td>{{f.montantDu}}</td>
+                                <td>{{f.montantEncaisse}}</td>
+                                <td>{{f.loginModifSaisi}}</td>                           
+                                <td>{{f.dateHeureModif|date('d/m/Y')}}</td>                           
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                <p class="text-center">Pas de résultat correspondant à afficher.</p>
+            {% endif %}
+        </div>
+    </div>
+    {#
+    </div>        #} 
+    <div class="modal-footer">
+        <button type="button" id="fermerHistoriqueMontant" data-dismiss="modal" class="btn btn-default">Fermer</button>
+    </div>
+
+<script>
+    
+{#    $('body').on('hidden.bs.modal', '.modal', function () {
+        $(this).removeData('bs.modal');
+        $('#modalAfficherHistoriqueMontant .modal-dialog .modal-content').html(' <div class="loading"><div class="" style="margin-left:42%;margin-bottom: 10px;margin-top:10px;"><img src="{{ asset('bundles/communs/images/ajax-loader.gif') }}"  > Chargement en cours...</div></div>');
+    });#}
+    
+  {#  $(document).ready(function () {
+        $("#fermerHistoriqueMontant").click(function () {
+            $(this).closest('div.in').addClass('hide');
+            removeCache();
+            $('.modal-backdrop').remove();
+        });
+
+        $('thead tr th').removeAttr('class');
+    });#}
+
+    $('table#tableHistoriqueMontant').DataTable({
+        "language": {
+            processing: "Traitement en cours...",
+            search: "Rechercher&nbsp;:",
+            lengthMenu: "Afficher _MENU_ &eacute;l&eacute;ments",
+            info: "Affichage de l'&eacute;lement _START_ &agrave; _END_ sur _TOTAL_ &eacute;l&eacute;ments",
+            infoEmpty: "Affichage de l'&eacute;lement 0 &agrave; 0 sur 0 &eacute;l&eacute;ments",
+            infoFiltered: "(filtr&eacute; de _MAX_ &eacute;l&eacute;ments au total)",
+            infoPostFix: "",
+            loadingRecords: "Chargement en cours...",
+            zeroRecords: "Aucun &eacute;l&eacute;ment &agrave; afficher",
+            emptyTable: "Aucune donnée disponible dans le tableau",
+            paginate: {
+                first: "Premier",
+                previous: "Pr&eacute;c&eacute;dent",
+                next: "Suivant",
+                last: "Dernier"
+            },
+            aria: {
+                sortAscending: ": activer pour trier la colonne par ordre croissant",
+                sortDescending: ": activer pour trier la colonne par ordre décroissant"
+            }
+        },
+        "iDisplayLength": 10,
+    });
+    $("div#tableHistoriqueMontant_length").hide();
+    $("div#tableHistoriqueMontant_info").hide();
+    $("div#tableHistoriqueMontant_filter").hide();
+</script>

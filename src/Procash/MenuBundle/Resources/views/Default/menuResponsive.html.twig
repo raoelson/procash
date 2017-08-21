@@ -1,0 +1,19 @@
+<div id="menuResponsive">
+    <p class="btn-lg col-xs-10 col-sm-10" id="ariane">
+        <span class="glyphicon glyphicon-th-list"></span> Menus
+    </p>
+    <p id="">
+        <span id="titre">Menu</span>
+    </p>
+    <ul>
+    {% for menu in menus %}
+        {% set chemin = 'javascript:void(0);' %}
+        {% if menu.route|length %}
+            {% set chemin = path(menu.route) %}
+        {%endif %}
+        <li class="{% if menu.sousmenu %}decale{% endif %} {{ menu.actif }}"><a href="{{ chemin }}" data-ariane="{{ menu.ariane }}">{{ menu.libelle }}</a></li>
+    {% else %}
+        <li>Aucun menu</li>
+    {% endfor %}
+    </ul>
+</div>

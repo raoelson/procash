@@ -1,0 +1,4 @@
+parameters:
+    ftp_user: dev-md
+    ftp_pwd: Dev674.
+    ftp_host: dev-md.nacre-solutions.com

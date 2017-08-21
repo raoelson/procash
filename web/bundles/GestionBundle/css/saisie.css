@@ -1,0 +1,26 @@
+
+#cadre {
+    width:900px;
+    height: 500px;
+    margin:0 auto;
+    padding:10px;
+    background:none;
+    /*border:1px solid #DDD;*/
+    border-radius:5px;
+    -webkit-border-radius:5px;
+    -moz-border-radius:5px;
+    margin-top: 80px;
+}
+
+.nav-pills > li.active > a, .nav-pills > li.active > a:focus, .nav-pills > li.active > a:hover {
+    background-color: #d0101c !important;
+    color: #fff;
+}
+
+.dataTables_wrapper {
+    background-color : #fff!important;
+}
+
+.inputTableau {
+     border: 0 none transparent;
+}

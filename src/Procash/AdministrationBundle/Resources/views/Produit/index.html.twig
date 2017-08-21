@@ -1,0 +1,79 @@
+{% extends "::base.html.twig" %}
+
+{% block title %}Référentiel > Produits{% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('bundles/communs/css/jquery.dataTables.min.css') }}" type="text/css" />
+    {#    <link rel="stylesheet" href="{{ asset('bundles/communs/css/style_table.css') }}" type="text/css" />#}
+    <link rel="stylesheet" href="{{ asset('bundles/AdministrationBundle/Referentiels/css/produit.css') }}" type="text/css" />
+{% endblock %}
+{% block body %}
+    {{ parent() }}
+    <section class="content-header">
+        <h1>
+            Produits
+        </h1>
+    </section>
+    </br> </br>
+    <form class="form-horizontal col-lg-12 col-md-12" method="POST" role="form" action="javascript:void(0);">
+        <table id="example" class="display" cellspacing="0" width="100%">
+            <thead class="thead-inverse">
+                <tr>
+                    <th>Libellé du produit</th>
+                    <th>Code</th>
+                    <th class="action">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><input type="text" name="produit[0][libelle]" value="" class="form-control" placeholder="Entrez un produit" /></td>
+                    <td> <select id="selectCode" class="form-control input-sm" name="produit[0][code]">
+                            <option>Sélectionnez un code produit..</option>
+                            <option value="20">QUO</option>
+                            <option value="21">VIS</option>
+                        </select></td>
+                    <td><input type="submit" name="produit[0][ajouter]" value="+" class="btn btn-default ajouter" /></td>
+                </tr>
+                {% for produit in produitsExistants %}
+                    <tr>
+                <input type="hidden" name="produit[{{ loop.index }}][id]" value="{{ produit.id }}" />
+                <td><input type="text" name="produit[{{ loop.index }}][libelle]" value="{{ produit.libelle }}" class="form-control" placeholder="Entrez un produit" required="required" /></td>
+                <td>
+                <select class="form-control input-sm" name="produit[{{ loop.index }}][code]">
+                            <option></option>
+                            <option value="20" {% if produit.code == '20' %}selected{% endif %}>QUO</option>
+                            <option value="21" {% if produit.code == '21' %}selected{% endif %}>VIS</option>
+                         
+                        </select>
+                </td>
+                <td>
+                    <input type="submit" name="produit[{{ loop.index }}][modifier]" value="✏" class="btn btn-default modifier" />
+                    <button type="button" class="btn btn-default supprimer" data-dismiss="modal" data-toggle="modal" data-target="#confirmation{{ loop.index }}"></button>
+                    <div class="modal" id="confirmation{{ loop.index }}">
+                        <div class="modal-dialog">
+                            <div class="modal-content panel panel-danger">
+                                <div class="modal-header panel-heading">
+                                    <h4 class="modal-title">Confirmation de suppression</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <p id="modal-message" class="text-danger">Êtes-vous certain de vouloir supprimer le produit<strong>'{{ produit.libelle }}'</strong> ?</p>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">Non</button>
+                                    <input type="submit" name="produit[{{ loop.index }}][supprimer]" value="Oui" class="btn btn-default btn-danger" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </form>
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('bundles/communs/js/jquery.dataTables.min.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('bundles/AdministrationBundle/Referentiels/js/produit.js') }}" type="text/javascript"></script>
+{% endblock %}

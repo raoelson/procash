@@ -1,0 +1,90 @@
+{#<div class="modal-header modal-header-default">
+    <div style="text-align:center">     
+        <label style="font-size:18px;">Régul</label>
+    </div>
+    <br />
+    <h4 class="modal-title">Modification régul</h4>
+</div>      
+<div class="modal-body"> 
+    <form method="post" name="regul" action="{{ path('modifier_regul',{ 'id' : chiffreVente.id }) }}"  class="form-horizontal">
+        <div class="row">
+            <div class="form-horizontal">
+                <div class="form-group">
+                    <div class="col-sm-2 col-md-5 control-label">
+                        <label>Montant</label>
+                    </div>
+                    <div class="col-sm-10 col-md-7" id="montantT">
+                        <input value="{{chiffreVente.nombreRegulSaisi}}" type="text" name="regul[montant]" id="montant" class="montRegul form-control input-sm" placeholder="Montant"/>   
+                    </div>
+                    <span id="imgMontantRegul" class="glyphicon glyphicon-warning-sign form-control-feedback hidden" style="color: rgb(218, 73, 57); left: 421px; top: 0px;"></span>
+                    <div class="col-sm-12 no-padding container " >
+                        <div class="form-group afficherErreurMontantRegul hide" style="margin-left: 8px;">
+                            <div class="alert alert-danger" role="alert" style="margin: 0px 0px -14px 174px; padding-bottom: 1px; padding-left: 3px; padding-top: 0px; width: 250px; height: 21px;"><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                <label style=" font-size: 13px;">
+                                    Veuillez saisir un montant valide.
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-group afficherErreurMontantEncaisseSup hide" style="margin-left: 8px;">
+                            <div class="alert alert-danger" role="alert" style="padding-bottom: 7px; padding-top: 2px; height: 27px; width: 360px; padding-left: 0px; margin: 2px 15px -2px 169px;"><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                <label style=" font-size: 13px;">
+                                    Le montant doit être < au montant facture .
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-2 col-md-5 control-label">
+                        <label>Utilisateur</label>
+                    </div>
+                    <div class="col-sm-10 col-md-7" id="montantT">
+                        <input value="{{chiffreVente.dateHeureSaisi}}" type="text" name="regul[dateSaisie]" id="dateSaisie" class="dateSaisi form-control input-sm" placeholder="Date saisie"/>   
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal-footer">
+            <button type="button" id="an" {#onclick = "$(this).closest('div.in').addClass('hide');"#}{# onclick="annuler($(this)) class="btn btn-default" data-dismiss="modal">Annuler</button>
+            <button type="submit" class="boutonValider btn btn-primary submitButton">Valider</button>
+        </div>
+    </form>
+</div>
+<script>
+    {#    $('body').on('hidden.bs.modal', '.modal', function () {
+            $(this).removeData('bs.modal');
+            $('#modalModifierRegul .modal-dialog .modal-content').html(' <div class="loading"><div class="" style="margin-left:42%;margin-bottom: 10px;margin-top:10px;"><img src="{{ asset('bundles/communs/images/ajax-loader.gif') }}"  > Chargement en cours...</div></div>');
+        });
+            $('button#an').click(function () {
+                $(this).closest('div.in').addClass('hide');
+            });
+</script>
+<script src="{{ asset('bundles/GestionBundle/js/Facturation/modifier_regul.js') }}" type="text/javascript">
+</script>#}
+
+<div class="modal-dialog" id="a_corriger">
+    <div class="modal-content">
+
+        <div class="modal-body">
+            <table id="tableEval" class="table table-bordered table-hover table-responsive table-condensed" style="width : 99%"> 
+                <thead>  
+                    <tr>
+                        <th style="text-align: center !important;">Historiques</th>
+                    </tr>
+                <tbody>
+                    {%for x, e in listeObservateurs%}
+                        <tr>
+                            <td align="center">{{e.prenom}} {{e.nom}}</td>
+                        </tr>
+                    {%endfor%}
+                </tbody>
+                </thead> 
+            </table>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-default fermer" data-dismiss="modal">{{ 'workflow.configuration.fermer'|trans({}, "workflow", app.request.locale) }}</button>
+        </div>
+
+    </div>
+</div> 

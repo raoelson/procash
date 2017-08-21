@@ -1,0 +1,39 @@
+modifier_chiffre_vente_par_titre:
+    path: /chiffre-vente
+    defaults: { _controller: ProcashGestionBundle:Default:modifierChiffreVente }    
+
+modifier_facture:
+    path: /{id}/facture
+    defaults: { _controller: ProcashGestionBundle:Default:modifierFacture }
+    requirements:
+        id: \d+
+modifier_regul:
+    path: /{id}/regul
+    defaults: { _controller: ProcashGestionBundle:Default:modifierRegul }
+    requirements:
+        id: \d+
+liste_encaissement:
+    path: /encaissements
+    defaults: { _controller: ProcashGestionBundle:Default:liste }
+    
+modifier_detail_client:
+    path: /client/{id}/{idF}
+    defaults: { _controller: ProcashGestionBundle:Default:modifierDetailClient,id : 0,idF : null }
+    requirements:
+        id: \d+
+        
+ajax_afficher_historique_montant:
+  pattern: /afficher/historique-montant/{id}
+  defaults: { _controller: "ProcashGestionBundle:Default:afficherHistoriqueMontant"}
+  requirements:
+      id: \d+
+ajax_afficher_historique_regul:
+  pattern: /afficher/historique-regul/{id}
+  defaults: { _controller: "ProcashGestionBundle:Default:afficherHistoriqueRegul"}
+  requirements:
+      id: \d+
+ajax_afficher_historique_invendu:
+  pattern: /afficher/historique-invendu/{id}
+  defaults: { _controller: "ProcashGestionBundle:Default:afficherHistoriqueInvendu"}
+  requirements:
+      id: \d+

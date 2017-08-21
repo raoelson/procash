@@ -1,0 +1,18 @@
+procash_titre_liste:
+    path:     /titres
+    defaults: { _controller: ProcashAdministrationBundle:Titre:liste}
+
+creer_titre :
+    path: /ajouter
+    defaults: { _controller: ProcashAdministrationBundle:Titre:ajouter }
+    
+modifier_titre:
+    path: /titre/{id}/modifier
+    defaults: { _controller: ProcashAdministrationBundle:Titre:modifier }
+    requirements:
+        id: \d+
+supprimer_titre:
+    path: /titre/{id}/supprimer
+    defaults: { _controller: ProcashAdministrationBundle:Titre:supprimer }
+    requirements:
+        id: \d+

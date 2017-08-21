@@ -1,0 +1,9 @@
+services:
+    procash.verifier_droit:
+        class:  Procash\AdministrationBundle\DroitChecker\DroitListener
+        arguments: ["@security.context", "@doctrine.orm.entity_manager", "@controller_resolver", "@service_container"]
+        tags:
+            - { name: kernel.event_listener, event: kernel.controller, method: onKernelController }
+    redirect.after.login:
+        class: Procash\AdministrationBundle\Redirection\AfterLoginRedirection
+        arguments: [@router, @doctrine.orm.entity_manager, @session, @security.context]

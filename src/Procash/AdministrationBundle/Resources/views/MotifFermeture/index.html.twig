@@ -1,0 +1,102 @@
+{% extends "::base.html.twig" %}
+
+{% block title %}Référentiel > Motifs de fermeture{% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('bundles/communs/css/jquery.dataTables.min.css') }}" type="text/css" />
+    <link rel="stylesheet" href="{{ asset('bundles/AdministrationBundle/Referentiels/css/type_paiement.css') }}" type="text/css" />
+{% endblock %}
+{% block body %}
+    {{ parent() }}
+    
+    {% include 'ProcashAdministrationBundle:DelaiFermeture:index.html.twig'%}
+    
+    <div class="row" style="margin-top: 10px;">
+        <form class="form-horizontal col-lg-12 col-md-12 no-padding" method="POST" role="form" action="{{ path('procash_motif_fermeture_liste') }}">
+            <table id="example" class="display" cellspacing="0" width="100%">
+                <thead class="thead-inverse">
+                    <tr>
+                        <th>Libellé du motif de fermeture</th>
+                        <th>Code</th>
+                        <th class="action">Actions</th>
+                    </tr>
+                </thead>
+                <thead>
+                    <tr style="background-color: #FFF;">
+                        <th><input type="text" name="motifFermeture[0][libelle]" value="" class="form-control motifFermeture" placeholder="Entrez un motif de fermeture" />
+                            <span class='erreurLibelle hide' style='color: red; font-size: 11px;font-weight:bold;'>(Le libellé saisi existe déjà!)</span>
+                        </th>
+                        <th><input type="text" name="motifFermeture[0][code]" value="" class="form-control codemf" placeholder="Entrez un code ..." />
+                            <span class="erreurCode hide" style="color: red; font-size: 11px;font-weight:bold;">(Le code saisi existe déjà!)</span>
+                        </th>
+                        <th>
+                            <div id="ajouterMotif">
+                                <input id="btn_submit" type="submit" name="motifFermeture[0][ajouter]" class="hide ajouter"/>
+                                <div id="img_ajouter">
+                                    <img style="margin-left: -48px;" src='{{ asset('bundles/communs/images/plus.png') }}' width='22px'/>
+                                </div>
+                            </div>
+                            <div id="ajouterMotifHidden" class="hide" >
+                                <input class="btn btn-default hide" />
+                                <img style="margin-left: 4px;" src='{{ asset('bundles/communs/images/gris_plus.png') }}' width='22px'/>
+                            </div>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for motifFermeture in motifsFermeturesExistants %}
+                        <tr>
+                    <input type="hidden" name="motifFermeture[{{ loop.index }}][id]" value="{{ motifFermeture.id }}" />                    
+                    <td>
+                        <input type="text" name="motifFermeture[{{ loop.index }}][libelle]" value="{{ motifFermeture.libelle }}" class="form-control motifModif" id="mf_{{ motifFermeture.id }}" placeholder="Entrez un motif de fermeture" required="required" /></td>
+                    <td>
+                        <input type="text" name="motifFermeture[{{ loop.index }}][code]" value="{{ motifFermeture.code }}" class="form-control codemfcModif" id="mfc_{{ motifFermeture.id }}" placeholder="Entrez un code" required="required" />                        
+                    </td>
+                    <td>
+                        {#                        <input type="submit" name="motifFermeture[{{ loop.index }}][modifier]" value="✏" class="btn btn-default modifier" />#}
+                        <button type="submit" name="motifFermeture[{{ loop.index }}][modifier]" class="btn btn-default modifier" title="Modifier motif de fermeture"><i class="glyphicon glyphicon-floppy-disk btn-lg icone-enregistrer" ></i></button>
+                        <button type="button" class="btn btn-default supprimer" data-dismiss="modal" data-toggle="modal" title="Supprimer motif de fermeture" data-target="#confirmation{{ loop.index }}"></button>
+                        <div class="modal" id="confirmation{{ loop.index }}">
+                            <div class="modal-dialog">
+                                <div class="modal-content panel panel-danger">
+                                    <div class="modal-header panel-heading">
+                                        <h4 class="modal-title">Confirmation de suppression</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <p id="modal-message" class="text-danger">Êtes-vous certain de vouloir supprimer le motif de fermeture <strong>'{{ motifFermeture.libelle }}'</strong> ?</p>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">Non</button>
+                                        <input  onclick="addCache();
+                                                $('#confirmation{{ loop.index }}').modal('hide')"type="submit" name="motifFermeture[{{ loop.index }}][supprimer]" value="Oui" class="btn btn-default btn-danger" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </form>
+    </div>
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('bundles/communs/js/jquery.dataTables.min.js') }}" type="text/javascript"></script>
+    <script>
+    $('#img_ajouter').click(function () {
+        $('input#btn_submit').trigger("click");
+    });
+    var tableLibelle = new Array();
+    var tableCode = new Array();
+        {% for motifFermeture in motifsFermeturesExistants %}
+            var libelle = "{{motifFermeture.libelle}}";
+            var code = "{{motifFermeture.code}}";
+            tableLibelle.push(libelle);
+            tableCode.push(code);
+        {% endfor %}
+    </script>
+    <script src="{{ asset('bundles/AdministrationBundle/Referentiels/js/delai_fermeture.js') }}" type="text/javascript">
+    </script>      
+{% endblock %}

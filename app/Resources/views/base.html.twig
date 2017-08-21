@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>{% block title %}PROCASH{% endblock %}</title>
+        <script src="{{ asset('bundles/communs/js/jquery-2.1.4.min.js') }}" type="text/javascript"></script>
+        {% block stylesheets %}
+            <link rel="stylesheet" href="{{ asset('bundles/communs/css/bootstrap.css') }}" type="text/css" />
+            <link rel="stylesheet" href="{{ asset('bundles/communs/css/dataTables.css') }}" type="text/css" />
+            <link rel="stylesheet" href="{{ asset('bundles/communs/css/tableTools.css') }}" type="text/css" />
+            <link rel="stylesheet" href="{{ asset('bundles/communs/css/procashbase.css') }}" type="text/css" />
+            <link rel="stylesheet" href="{{ asset('bundles/communs/css/jquery-ui.css') }}" type="text/css" />
+            <link rel="stylesheet" href="{{ asset('bundles/communs/css/select2.min.css') }}" type="text/css" />
+            <link rel="stylesheet" href="{{ asset('bundles/communs/css/select2.css') }}" type="text/css" />
+            <link href="{{ asset('bundles/dhtmlx/dhtmlxCalendar/codebase/dhtmlxcalendar.css') }}" rel="stylesheet" type="text/css" >
+            <link href="{{ asset('bundles/dhtmlx/dhtmlxCalendar/codebase/skins/dhtmlxcalendar_dhx_terrace.css') }}" rel="stylesheet" type="text/css" >
+            <link href="{{ asset('bundles/dhtmlx/dhtmlxCalendar/codebase/skins/dhtmlxcalendar_dhx_skyblue.css') }}" rel="stylesheet" type="text/css" >
+
+            <link rel="stylesheet" href="{{asset ('https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css')}}">
+            <!-- Ionicons -->
+            <link rel="stylesheet" href="{{asset ('https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css')}}">
+            <link rel="stylesheet" href="{{asset ('bundles/communs/template/css/AdminLTE.css')}}">
+            <style>
+                .navigation {
+                    margin: 0;
+                    padding: 0;
+                    list-style: none;
+                    color: #fff;
+                    font: 1.2em "Trebuchet MS", sans-serif;
+                }
+                .navigation a, .navigation span {
+                    display: block;
+                    padding: 4px 10px;
+                    color: #fff;
+                    text-decoration: none;
+                }
+
+                .navigation a:hover, .navigation a:focus, .navigation a:active {
+                    color: #fff;
+                }
+                .navigation .subMenu {
+                    font-size: .8em;
+                    font-size: .9em;
+                    margin: 0;
+                    padding: 0;
+                }
+                .navigation ul.subMenu a {
+                    background: none;
+                    padding: 3px 20px;
+                }
+                table.dataTable tbody th, table.dataTable tbody td{
+                    font-family: calibri;
+                }
+            </style>
+        {% endblock %}
+    </head>
+
+    <body class="hold-transition skin-blue sidebar-mini">
+        {#        <div class="wrapper">#}
+
+        <header class="main-header">
+            <!-- Logo -->
+            <a href="#" class="logo">
+                {#  <!-- mini logo for sidebar mini 50x50 pixels -->
+                  <span class="logo-mini"><b>A</b>LT</span>#}
+                <!-- logo for regular state and mobile devices -->
+                <span class="logo-lg"> <img src="{{ asset('bundles/communs/images/quotidienwhite-ok.png') }}" id="logo" style="width:150px;"/></span>
+              {#  <span class="close">&times;</span>#}
+            </a>       
+            <!-- Header Navbar: style can be found in header.less -->
+            <nav class="navbar navbar-static-top" role="navigation" id="afixer">
+                <!-- Sidebar toggle button-->
+                <a href="#" class="sidebar-toggle bouton1" data-toggle="offcanvas" role="button" style="margin-top: 14px;">
+                    <span class="sr-only">Toggle navigation</span>
+                </a>
+                <div class="row">
+                    <div class="col-xs-4 col-md-3 no-padding col-sm-offset-4" style="text-align: center">
+                        <img style="width: 200px;" src="{{ asset('bundles/communs/images/quotidien_journal.png') }}" id="logo" style="width:275px;"/>
+
+                    </div>
+                    <div class="col-xs-3 col-xs-offset-1 col-md-2 col-md-offset-2">
+                        <a title="Déconnexion" href="{{ path('fos_user_security_logout') }}" style="outline:none">
+                            <img src="{{ asset('bundles/communs/images/usericon.png') }}" style="margin-top: 27px; width: 36px; position: relative; left: 50px; top: 7px"/>
+                        </a>
+                        <div style="position: absolute; left: 100px; top: 0px; margin-left: 11px; margin-top: 22px;">
+                            <h5 class="brk"><p class="limite-car">{%if app.user is not null and app.user.username is not null%}{{ app.user.username }}{%endif%}</p></h5>
+                        </div>
+                        <div style="position: absolute; left: 100px; top: 13px; margin-top: 33px; margin-right: 0px; margin-left: 10px;">
+                            <small>{{ "now"|date("d/m/Y") }}</small>
+                        </div>
+
+                    </div>
+                </div>                
+            </nav>
+        </header>
+        <!-- Left side column. contains the logo and sidebar -->
+        <aside class="main-sidebar" style="padding-top: 122px;">
+            <!-- sidebar: style can be found in sidebar.less -->
+            <!-- /.sidebar -->
+
+            <ul class="navigation" id="menu-accordeon">
+                {% render(controller('ProcashMenuBundle:Default:menuPrincipal', { 'route': app.request.requesturi })) %}
+            </ul>
+        </aside>
+        <div class="separateur" style="position: relative; top:9px; margin-right: 0px; margin-left: 0px!important;">
+            <img src="{{ asset('bundles/communs/images/separateur.png') }}" style="height:2px;" width="100%"/>
+        </div>
+        <!-- Content Wrapper. Contains page content -->
+        <div class="content-wrapper">
+
+            <!-- Main content -->
+            <section class="content">
+                {% block body %}
+                    {% set erreurs = app.session.flashbag.get('error') %}
+                    {% set infos = app.session.flashbag.get('info') %}
+                    {% set warning = app.session.flashbag.get('warn') %}
+
+                    {% if erreurs|length > 0 %}
+                        <div class="modal" id="erreur">
+                            <div class="modal-dialog">
+                                <div class="modal-content panel panel-danger">
+                                    <div class="modal-header panel-heading">
+                                        <h4 class="modal-title">Erreur</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        {% for flashMessage in erreurs %}
+                                            <p id="modal-message" class="text-danger">{{ flashMessage }}</p>
+                                        {% endfor %}
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-default btn-danger" data-dismiss="modal">OK</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+                    {% if infos|length > 0 %}
+                        <div class="modal" id="info">
+                            <div class="modal-dialog">
+                                <div class="modal-content panel panel-success">
+                                    <div class="modal-header panel-heading">
+                                        <h4 class="modal-title">Information</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        {% for flashMessage in infos %}
+                                            <p id="modal-message" class="text-success">{{ flashMessage }}</p>
+                                        {% endfor %}
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-default btn-success" data-dismiss="modal">OK</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+                    {% if warning|length > 0 %}
+                        <div class="modal" id="info">
+                            <div class="modal-dialog">
+                                <div class="modal-content panel panel-warning">
+                                    <div class="modal-header panel-heading">
+                                        <h4 class="modal-title">Attention</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        {% for flashMessage in warning %}
+                                            <p id="modal-message" class="text-warning">{{ flashMessage }}</p>
+                                        {% endfor %}
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-default btn-warning" data-dismiss="modal">OK</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+                {% endblock %}
+
+            </section><!-- /.content -->
+        </div><!-- /.content-wrapper -->
+
+    </body>
+    {% block javascripts %} 
+        <script src="{{ asset('bundles/communs/js/bootstrap.js') }}"></script>
+        <script src="{{ asset('bundles/communs/js/dataTables.js') }}" type="text/javascript" ></script>
+        <script src="{{ asset('bundles/communs/js/tableTools.js') }}" type="text/javascript" ></script>
+        <script src="{{ asset('bundles/communs/js/jquery-ui.js') }}" type="text/javascript"></script>
+        <script type="text/javascript" src="{{ asset('bundles/communs/js/select2.min.js')}}"></script>
+        <script type="text/javascript" src="{{ asset('bundles/communs/js/select2.js')}}"></script>
+        <script type="text/javascript" src="{{ asset('bundles/communs/js/utilitaire.js')}}"></script>
+        <script type="text/javascript" src="{{ asset('bundles/dhtmlx/dhtmlxCalendar/codebase/dhtmlxcalendar.js') }}"></script>
+        <script  type="text/javascript" language="javascript">
+            if ($('div#erreur.modal').length) {
+                $('div#erreur.modal').modal('show');
+            }
+            if ($('div#info.modal').length) {
+                $('div#info.modal').modal('show');
+            }
+        </script>
+
+        <script type="text/javascript">
+            $(".navigation li.toggleSubMenu > a").click(function () {
+                // Si le sous-menu était déjà ouvert, on le referme :
+                if ($(this).next("ul.subMenu:visible").length != 0) {
+                    $(this).next("ul.subMenu").slideUp("normal", function () {
+                        $(this).parent().removeClass("open");
+                    });
+                }
+                // Si le sous-menu est caché, on ferme les autres et on l'affiche :
+                else {
+                    $(".navigation ul.subMenu").slideUp("normal", function () {
+                        $(this).parent().removeClass("open");
+                    });
+                    $(this).next("ul.subMenu").slideDown("normal", function () {
+                        $(this).parent().addClass("open");
+                    });
+                }
+                // On empêche le navigateur de suivre le lien :
+                return false;
+            });
+
+            $(document).ready(function () {
+                // sauf celui qui porte la classe "open_at_load" :
+                $(".navigation ul.subMenu:not('.open_at_load')").hide();
+
+
+                $('.aactive').trigger('click');
+
+            });
+            
+         
+        </script>    
+        <script src="{{ asset('bundles/communs/template/js/jquery.viewport.js')}}"></script>
+        <script>                                    
+            var hvp = ($(":in-viewport").height());
+            $('body').css('height',hvp);
+            $('.main-sidebar').css('height',hvp);
+            $( window ).resize(function() {
+               $('body').css('height',hvp);
+               $('.main-sidebar').css('height',hvp);
+            });
+        </script>
+    {% endblock %}
+</body>
+</html>

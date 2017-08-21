@@ -1,0 +1,7 @@
+procash_menu_homepage:
+    path:     /administration
+    defaults: { _controller: ProcashMenuBundle:Default:menuPrincipal }
+    
+#utilisateur :
+#    path: /utilisateurs
+#    defaults: { _controller: ProcashUserBundle:Default:index }

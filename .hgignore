@@ -1,0 +1,15 @@
+syntax: glob
+app/cache/*
+app/logs/*
+
+*.orig
+*/.git/*
+Thumbs.db
+nbproject/*
+*.php~
+
+web/uploads/
+web/cache/
+web/upload/
+web/importations
+web/tmp/*

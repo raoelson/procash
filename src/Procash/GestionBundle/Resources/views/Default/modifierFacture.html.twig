@@ -1,0 +1,173 @@
+<div class="modal-header modal-header-default">
+    <div style="text-align:center">     
+        <label style="font-size:18px;">Modification facture</label>
+    </div>
+    <br />
+   {# <h4 class="modal-title">Modification facture</h4>#}
+</div>      
+<div class="modal-body"> 
+    <form method="post" name="encaissement" action="{{ path('modifier_facture',{ 'id' : facturation.id }) }}"  class="form-horizontal">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <div class="col-sm-4">
+                        <label class="" > <span style=" font-weight: bold;color:#000;"> Mode de paiement</span> </label>
+                    </div>
+                    <div class="col-sm-4">
+                        <select class="form-control input-sm" id="modePaiement" name="encaissement[modePaiement]">
+                            {#<option></option>#}
+                            {% for mode in modePaiements %}
+                                <option {% if facturation.typePaiement is not null and facturation.typePaiement.id == mode.id %}selected{% endif %} value="{{mode.id}}__{{ mode.code }}">{{ mode.libelle }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+            </div>                   
+            <div class="col-md-12">
+                <div id="contenuModePaiementTraite" class="col-md-6 col-xs-12" style="margin-top:20px; margin-left: -111px;">
+                    <div class="form-horizontal">
+                        <div class="form-group">
+                            <div class="col-sm-2 col-md-5 control-label">
+                                <label>Montant</label>
+                            </div>
+                            <div class="col-sm-10 col-md-7" id="montantT">
+                                <input value="{{facturation.montantEncaisseSaisi}}" type="text" name="encaissement[montantT]" id="montantTraite" class="montEncaisse form-control input-sm" placeholder="Montant"/>   
+                            </div>
+                            <span id="imgTraite" class="glyphicon glyphicon-warning-sign form-control-feedback hidden" style="color: rgb(218, 73, 57); left: 421px; top: 0px;"></span>
+                            <div class="col-sm-12 no-padding container " >
+                                <div class="form-group afficherErreurMontantTraite hide" style="margin-left: 8px;">
+                                    <div class="alert alert-danger" role="alert" style="margin: 0px 0px -14px 174px; padding-bottom: 1px; padding-left: 3px; padding-top: 0px; width: 250px; height: 21px;"><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                        <label style=" font-size: 13px;">
+                                            Veuillez saisir un montant valide.
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="form-group afficherErreurMontantEncaisseSup hide" style="margin-left: 8px;">
+                                    <div class="alert alert-danger" role="alert" style="padding-bottom: 7px; padding-top: 2px; height: 27px; width: 360px; padding-left: 0px; margin: 2px 15px -2px 169px;"><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                        <label style=" font-size: 13px;">
+                                            Le montant doit être < au montant facture .
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div> 
+
+                <div id="contenuModePaiementEspece" class="col-md-6 col-xs-12" style="margin-top:20px; margin-left: -32px;">
+                    <div class="form-horizontal">
+                        <div class="form-group">
+                            <label class="control-label col-sm-3" for="montant">Montant</label>
+                            <div class="col-sm-9" id="montantE">
+                                <input type="text" value="{{facturation.montantEncaisseSaisi}}" name="encaissement[montantE]" class="montantEspece form-control" id="montantEspece" placeholder="Montant">
+                                <span id="imgEspece" class="glyphicon glyphicon-warning-sign form-control-feedback hidden" style="color: rgb(218, 73, 57); left: 308px; top: 0px;"></span>
+                            </div>
+                            <div class="col-sm-12 no-padding container " >
+                                <div class="form-group afficherErreurMontantEspece hide" style="margin-left: 8px;">
+                                    <div class="alert alert-danger" role="alert" style="margin: 0px 0px -14px 100px; padding-bottom: 1px; padding-left: 3px; padding-top: 0px; width: 250px; height: 21px;"><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                        <label style=" font-size: 13px;">
+                                            Veuillez saisir un montant valide.
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group afficherErreurMontantEncaisseSup hide" style="margin-left: 8px;">
+                                <div class="alert alert-danger" role="alert" style="padding-bottom: 7px; padding-top: 2px; padding-left: 0px; margin: 39px 0px -22px 111px; height: 25px; width: 308px;"><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                    <label style=" font-size: 13px;">
+                                        Le montant doit être < au montant facture .
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-3" for="recu">Nom Reçu</label>
+                            <div class="col-sm-9">
+                                <input type="text" value="{{facturation.nomRecu}}" name="encaissement[nomRecuE]" class="form-control" id="numRecu" placeholder="Nom Reçu">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="contenuModePaiementCheque" class="col-md-12 col-xs-12" style="margin-top:20px; margin-left: -43px;">
+                    <div class="col-md-6 col-xs-12">
+                        <div class="form-horizontal">
+                            <div class="form-group">
+                                <label class="control-label col-sm-3" for="montant">Montant</label>
+                                <div class="col-sm-9" id="montantC">
+                                    <input type="text" value="{{facturation.montantEncaisseSaisi}}" name="encaissement[montantC]" class="montantEspece form-control" id="montantCheque" placeholder="Montant">
+                                    <span id="imgCheque" class="glyphicon glyphicon-warning-sign form-control-feedback hidden" style="color: rgb(218, 73, 57); left: 308px; top: 0px;"></span>
+                                </div>
+                                <div class="col-sm-12 no-padding container " >
+                                    <div class="form-group afficherErreurMontantCheque hide" style="margin-left: 8px;">
+                                        <div class="alert alert-danger" role="alert" style="margin: 0px 0px -14px 100px; padding-bottom: 1px; padding-left: 3px; padding-top: 0px; width: 250px; height: 21px;"><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                            <label style=" font-size: 13px;">
+                                                Veuillez saisir un montant valide.
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group afficherErreurMontantEncaisseSup hide" style="margin-left: 8px;">
+                                    <div class="alert alert-danger" role="alert" style="padding-bottom: 7px; padding-top: 2px; padding-left: 0px; margin: 39px 0px -22px 111px; height: 25px; width: 308px;"><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                        <label style=" font-size: 13px;">
+                                            Le montant doit être < au montant facture .
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-3" for="recu">Nom Reçu</label>
+                                <div class="col-sm-9">
+                                    <input type="text" value="{{facturation.nomRecu}}" name="encaissement[nomRecuC]" class="form-control" id="numRecuCheque" placeholder="Nom Reçu">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-3" for="recu">Banque</label>
+                                <div class="col-sm-9">
+                                    <select class="form-control input-sm" id="banque" name="encaissement[banque]">
+                                        <option></option>
+                                        {% for b in listeBanques %}
+                                            {#{% if facturation.banque.id is defined %}#}
+                                                <option {% if facturation.banque is not null and facturation.banque.id == b.id %}selected{% endif %} value="{{b.id}}">{% if b is defined %}{{ b.libelle }}{% else %}-{% endif %}
+                                                </option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-xs-12">
+                        <div class="form-horizontal">                                   
+                            <div class="form-group">
+                                <label class="control-label col-sm-3" for="numCheque">N° Cheque</label>
+                                <div class="col-sm-9">
+                                    <input type="text" value="{{facturation.numeroCheque}}" name="encaissement[numCheque]" class="form-control" id="numeroCheque" placeholder="N°Chèque">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-3" for="echeance">Echeance</label>
+                                <div class="col-sm-9">
+                                    <input type="text" value="{{facturation.echeance|date('d/m/Y')}}" name="encaissement[echeance]" class="form-control" id="echeance" placeholder="Echeance">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+
+        <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Annuler</button>
+            <button type="submit" class="boutonValider btn btn-primary submitButton">Valider</button>
+        </div>
+    </form>
+</div>
+<script>
+    $('body').on('hidden.bs.modal', '.modal', function () {
+        $(this).removeData('bs.modal');
+        $('#modalModifierFacture .modal-dialog .modal-content').html(' <div class="loading"><div class="" style="margin-left:42%;margin-bottom: 10px;margin-top:10px;"><img src="{{ asset('bundles/communs/images/ajax-loader.gif') }}"  > Chargement en cours...</div></div>');
+    });
+    var montantFacture = {{facturation.montantFacture}};</script>
+<script src="{{ asset('bundles/GestionBundle/js/Facturation/modifier_facture.js') }}" type="text/javascript">
+</script>

@@ -1,0 +1,207 @@
+<style>
+    {#li.active{
+        background-color: #c12e2a!important;
+    }#}
+    .pellicule {
+        position: absolute; 
+        background-color:rgba(0, 0, 0, 0.5); 
+        width: 100%; 
+        height: 100%; 
+        {#    z-index: 1100;#}
+        /*display: none;*/
+        top: 0;
+        left: 0;
+    }
+    .saisie1 {
+        background-color: transparent;
+        border: 0 none transparent;
+        box-shadow: 0 1px 1px rgba(0, 0, 0, 0) inset;
+        height: 30px;
+        padding: 4px;
+    }
+
+    #modifierCV {
+        color: #57554F;
+    }
+    #modifierCVisu {
+        color: #57554F;
+    }
+    .nav-pills > li.active > a, .nav-pills > li.active > a:focus, .nav-pills > li.active > a:hover {
+        background-color: #d0101c !important;
+        color: #fff;
+    }
+    .remarque{
+        color:#0044cc;
+    }
+</style>
+<div class="modal-header modal-header-default">
+    <div style="text-align:center">     
+        <label>{{ client.nom }}</label></br>
+        <label>{{ client.raisonSociale }}</label></br>
+        <label>{{ client.adresse }}</label></br>
+    </div>
+    <br />
+    <h4 class="modal-title">Détails par titre</h4>
+</div>      
+<div class="modal-body"> 
+    {#<form method="post" name="encaissement" action="{{ path('modifier_facture',{ 'id' : facturation.id }) }}"  class="form-horizontal">#}
+{#    {% if produitAfficher|length > 0 %}#}
+    <div id="cadre" style="padding-left: 10px; border-left-width: 1px; margin-right: 0px;">   
+        <div id="tabSaisie">	
+            <ul class="nav nav-pills nav-justified">
+                <li class="active">
+                    <a  href="#tabQuotidien" data-toggle="tab">QUOTIDIEN</a>
+                </li>
+                <li>
+                    <a  href="#tabVisu" data-toggle="tab">VISU</a>
+                </li>
+            </ul>
+            <div class="tab-content clearfix " style="margin-top: 30px;">
+
+                <div class="tab-pane  fade in active" id="tabQuotidien">
+                    <table id="tableQuotidien" class="display tabOnglet" cellspacing="0" width="100%">
+                        <thead class="thead-inverse">
+                            <tr>
+                                <th>Date</th>
+                                <th>Commande</th>
+                                <th>Regul</th>
+                                <th>Invendu</th>
+                                <th>Vendu</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for detailQ in detailFacturationQuotidien %}
+                            <tr>
+                                <td>
+                                    <span class="hide">{{ detailQ.date|date('Y-m-d') }}</span>
+                                                        {{ detailQ.date|date('d/m/Y') }}
+                                </td>
+                                <td style="background-color:#FAFAFA !important;"><input name="nombre_commande_hidden" id="nombre_commande_hidden" type="text" class="hidden form-control input-sm"  value="{{detailQ.nombreNumCommande }}">{{ detailQ.nombreNumCommande }}
+                                </td>
+                                <td style="background-color:#FAFAFA !important;"><div class="form-group"><div class="col-md-8"><input style="width: 80px;" id="nombreRegul" type="text" class="saisie1 form-control" value="{{ detailQ.nombreRegul }}"/></div><div><a onclick="javascript:afficherModalRegul($(this), '{{path('ajax_afficher_historique_regul',{'id':detailQ.id})}}');"  class="correction" href="javascript:void(0);"><span style="top: 8px;" class="glyphicon glyphicon-list-alt"style="color:#000000"></span></a></div></div>
+                                </td>
+                                <td style="background-color:#FAFAFA !important;"><div class="form-group" id="containerInvendu"><div class="col-md-8"><input style="width: 83px;" id="nombInvendu" type="text" class="saisie1 form-control" value="{{ detailQ.nombreInvendu }}"/> </div><div><a onclick="javascript:afficherModalInvendu($(this), '{{path('ajax_afficher_historique_invendu',{'id':detailQ.id})}}');"  class="correction" href="javascript:void(0);"><span style="top: 8px;" class="glyphicon glyphicon-list-alt"style="color:#000000"></span></a></div></div>
+                                </td>
+                                <td style="background-color:#FAFAFA !important;"><input id="nombVendu" disabled="disabled" type="text" style="width: 81px;" class="saisie1 form-control" value="{{ (detailQ.nombreNumCommande + detailQ.nombreRegul)- detailQ.nombreInvendu }}"/>
+                                </td>                               
+                                <td><input hidden value="{{detailQ.id}}"><a onclick="validerChiffreVente($(this))" href="javascript:void(0);"><span id="modifierCV" class="glyphicon glyphicon-floppy-disk btn-lg"></span></a><span id="modifierCVGris" class="hide glyphicon glyphicon-floppy-disk btn-lg"></span>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>  
+                <div class="tab-pane fade" id="tabVisu">
+                    <table id="tableVisu" class="display tabOnglet" cellspacing="0" width="100%">
+                        <thead class="thead-inverse">
+                            <tr>
+                                <th>Date</th>
+                                <th>Commande</th>
+                                <th>Regul</th>
+                                <th>Invendu</th>
+                                <th>Vendu</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                                    {% for detailQ in detailFacturationVisu %}
+                            <tr>
+                                <td>
+                                    <span class="hide">{{ detailQ.date|date('Y-m-d') }}</span>
+                                                        {{ detailQ.date|date('d/m/Y') }}
+                                </td>
+                                <td style="background-color:#FAFAFA !important;"><input name="nombre_commande_hidden_visu" id="nombre_commande_hidden_visu" type="text" class="hidden form-control input-sm"  value="{{detailQ.nombreNumCommande }}">{{ detailQ.nombreNumCommande }}
+                                </td>
+                                <td style="background-color:#FAFAFA !important;"><div class="form-group"><div class="col-md-8"><input style="width: 90px;" id="nombreRegul_visu" type="text" class="saisie1 form-control" value="{{ detailQ.nombreRegul }}"/></div><div><a onclick="javascript:afficherModalRegul($(this), '{{path('ajax_afficher_historique_regul',{id:detailQ.id})}}');" class="correction" href="javascript:void(0);"><span style="top: 8px;" class="glyphicon glyphicon-list-alt"style="color:#000000"></span></a></div></div>
+                                </td>
+                                <td style="background-color:#FAFAFA !important;"><div class="form-group" id="containerInvendu_visu"><div class="col-md-8"><input style="width: 80px;" id="nombInvendu_visu" type="text" class="saisie1 form-control" value="{{ detailQ.nombreInvendu }}"/></div><div><a onclick="javascript:afficherModalInvendu($(this), '{{path('ajax_afficher_historique_invendu',{id:detailQ.id})}}');"  class="correction" href="javascript:void(0);"><span style="top: 8px;" class="glyphicon glyphicon-list-alt"style="color:#000000"></span></a></div></div>
+                                </td>
+                                <td style="background-color:#FAFAFA !important;"><input id="nombVendu_visu" disabled="disabled" type="text" style="width: 81px;" class="saisie1 form-control" value="{{ (detailQ.nombreNumCommande + detailQ.nombreRegul)- detailQ.nombreInvendu }}"/>
+                                </td>                               
+                                <td><input hidden value="{{detailQ.id}}"><a onclick="validerChiffreVente($(this))" href="javascript:void(0);"><span id="modifierCV" class="glyphicon glyphicon-floppy-disk btn-lg"></span></a><span id="modifierCVGris" class="hide glyphicon glyphicon-floppy-disk btn-lg"></span>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>  
+            </div>
+        </div>
+    </div>
+</div>
+<p><span style="margin-left: 23px;" class="remarque">*</span> L'invendu saisi doit être inférieur ou égal à la commande.</p>
+<div class="modal-footer">
+    <button type="button" id="annulerModifClient" class=" btn btn-default" data-dismiss="modal">Annuler</button>
+    <button type="submit" class="boutonValider btn btn-primary submitButton">Valider</button>
+</div>
+<div class="modal fade" id="affichageRegul" role="dialog" aria-hidden="false" data-backdrop="static">
+    <div class="modal-dialog  modal-sm">
+        <div class="modal-content">
+            <div class="loading"></div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="affichageInvendu" role="dialog" aria-hidden="false" data-backdrop="static">
+    <div class="modal-dialog  modal-sm">
+        <div class="modal-content">
+            <div class="loading"></div>
+        </div>
+    </div>
+</div>
+<div class="pellicule hide">
+    <div class="loading" style="margin-top: 168px;"><div class="" style="margin-left:42%;margin-bottom: 10px;margin-top:10px;"><img src="{{ asset('bundles/communs/images/ajax-loader.gif') }}"  > Chargement en cours...</div></div>
+</div>
+<script type="text/javascript">
+    var urlCv = "{{path('modifier_chiffre_vente_par_titre')}}";
+    var url = "{{path('modifier_chiffre_vente_par_titre')}}";
+    var userEnCours = "{{app.user.username}}";
+        {% for detailQ in detailFacturationVisu %}
+    var urlRegul = "{{path('ajax_afficher_historique_regul',{id:detailQ.id})}}";
+    var urlInvendu = "{{path('ajax_afficher_historique_invendu',{id:detailQ.id})}}";
+        {% endfor %}
+</script>
+<script>
+    $('body').on('hidden.bs.modal', '.modal', function() {
+        $(this).removeData('bs.modal');
+        $('#modalModifierDetailClient .modal-dialog .modal-content').html(' <div class="loading"><div class="" style="margin-left:42%;margin-bottom: 10px;margin-top:10px;"><img src="{{ asset('bundles/communs/images/ajax-loader.gif') }}"  > Chargement en cours...</div></div>');
+        $('div.modal-backdrop').remove();
+    });
+
+    $("button#annulerModifClient").click(function() {
+        $('.modal-backdrop').remove();
+    });
+
+    $("#infoOK").click(function() {
+        $(this).closest('div.in').addClass('hide');
+        $('.pellicule').addClass('hide');
+    });
+
+    function afficherModalRegul(obj, urlRegul) {
+        $('.pellicule').removeClass('hide');
+        $.ajax({
+            type: "POST",
+            url: urlRegul,
+            success: function(data) {
+                $("#affichageRegul").html(data);
+                $("#affichageRegul").modal('show');
+                $("#affichageRegul").removeClass('hide');
+            }
+        });
+    }
+
+    function afficherModalInvendu(obj, urlInvendu) {
+        $('.pellicule').removeClass('hide');
+        $.ajax({
+            type: "POST",
+            url: urlInvendu,
+            success: function(data) {
+                $("#affichageInvendu").html(data);
+                $("#affichageInvendu").modal('show');
+                $("#affichageInvendu").removeClass('hide');
+            }
+        });
+    }
+</script>
+<script src="{{ asset('bundles/GestionBundle/js/Facturation/detail_client_modifier.js') }}" type="text/javascript">
+</script>

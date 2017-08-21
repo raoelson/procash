@@ -1,0 +1,4 @@
+services:
+#    procash_api.example:
+#        class: Procash\ApiBundle\Example
+#        arguments: [@service_id, "plain_value", %parameter%]

@@ -1,0 +1,15 @@
+procash_profil_liste:
+    path:     /profils
+    defaults: { _controller: ProcashAdministrationBundle:Profil:liste }
+
+procash_profil_ajouter:
+    path:     /profil/ajouter
+    defaults: { _controller: ProcashAdministrationBundle:Profil:ajouter }
+
+procash_profil_modifier:
+    path:     /profil/{id}/modifier
+    defaults: { _controller: ProcashAdministrationBundle:Profil:modifier }
+
+procash_profil_supprimer:
+    path:     /profil/{id}/supprimer
+    defaults: { _controller: ProcashAdministrationBundle:Profil:supprimer}

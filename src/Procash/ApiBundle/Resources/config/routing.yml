@@ -1,0 +1,92 @@
+get_user:
+    path:     /user/{username}
+    defaults: { _controller: ProcashApiBundle:Utilisateur:getUser }
+get_reseaux_user:
+    path:     /reseau/{id}
+    defaults: { _controller: ProcashApiBundle:Reseau:getReseauxUser }
+get_clients_reseaux:
+    path:     /clients/{reseau}
+    defaults: { _controller: ProcashApiBundle:Reseau:getClientsReseau }
+get_clients_user:
+    path:     /clients-user/{user}
+    defaults: { _controller: ProcashApiBundle:Reseau:getClientsUser }
+get_reseaux:
+    path:     /get-reseaux
+    defaults: { _controller: ProcashApiBundle:Reseau:getReseaux}
+get_clients:
+    path:     /get-clients
+    defaults: { _controller: ProcashApiBundle:Reseau:getClients}
+    
+#SAISIE
+get_saisie_reseau_client_utilisateur:
+    path:     /saisie/utilisateur
+    defaults: { _controller: ProcashApiBundle:Saisie:getSaisie }
+get_saisie_user:
+    path:     /all-saisie/utilisateur
+    defaults: { _controller: ProcashApiBundle:Saisie:getSaisieUser }
+set_saisie_client_utilisateur:
+    path:     /save-saisie/utilisateur
+    defaults: { _controller: ProcashApiBundle:Saisie:setSaisie }
+get_saisies:
+    path:     /get-saisies
+    defaults: { _controller: ProcashApiBundle:Saisie:getSaisies}
+
+#ENCAISSEMENT
+get_encaissement_client:
+    path:     /encaissement/client
+    defaults: { _controller: ProcashApiBundle:Saisie:getEncaissementClient }
+set_encaissement_client:
+    path:     /synchro-encaissement/client
+    defaults: { _controller: ProcashApiBundle:Saisie:setEncaissementClient }
+get_facturations:
+    path:     /get-facturations
+    defaults: { _controller: ProcashApiBundle:Facturation:getFacturations}
+set_facturations:
+    path:     /set-facturations
+    defaults: { _controller: ProcashApiBundle:Facturation:setFacturations}
+
+#REFERENTIELS
+get_banques:
+    path:     /get-banques
+    defaults: { _controller: ProcashApiBundle:Banque:getBanques }
+get_titres:
+    path:     /get-titres
+    defaults: { _controller: ProcashApiBundle:Banque:getTitres }
+
+#FERMETURE
+get_delai_fermeture:
+    path:    /get-delai-fermeture
+    defaults: { _controller: ProcashApiBundle:Fermeture:getDelaiFermeture }
+get_motifs_fermeture:
+    path:    /get-motifs-fermeture
+    defaults: { _controller: ProcashApiBundle:Fermeture:getMotifFermeture }
+set_fermeture:
+    path:    /set-fermeture
+    defaults: { _controller: ProcashApiBundle:Fermeture:setFermeture }
+get_fermetures:
+    path:    /get-fermetures
+    defaults: { _controller: ProcashApiBundle:Fermeture:getFermetures }
+    
+#REMPLACEMENT_CLIENT
+get_remplacements-client:
+    path:    /get-remplacement-client
+    defaults: { _controller: ProcashApiBundle:Fermeture:getRemplacementClient }
+    
+#REDISTRIBUTION
+set_redistribution:
+    path:    /set-redistribution
+    defaults: { _controller: ProcashApiBundle:Fermeture:setRedistribution }
+get_redistributions:
+    path:    /get-redistributions
+    defaults:
+     { _controller: ProcashApiBundle:Fermeture:getRedistribution }
+      
+#Version APK
+get_version_apk:
+    path:    /get-version-apk
+    defaults: { _controller: ProcashApiBundle:GestionVersion:getVersionApk }
+
+initialiser_firebase:
+    resource: "@ProcashApiBundle/Controller/InitialiseFirebaseController.php"
+    type:     annotation
+    prefix:   /

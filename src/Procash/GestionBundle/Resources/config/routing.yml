@@ -1,0 +1,16 @@
+procash_gestion_saisi:
+    resource: "@ProcashGestionBundle/Resources/config/saisi/routing.yml"
+    prefix:   /gestion
+procash_gestion_fermeture:
+    resource: "@ProcashGestionBundle/Resources/config/fermeture/routing.yml"
+    prefix:   /gestion
+procash_gestion_redistribution:
+    resource: "@ProcashGestionBundle/Resources/config/redistributions/routing.yml"
+    prefix:   /gestion
+
+procash_gestion_facture_provisoire_pdf:
+    path: /gestion/encaissement/facture-provisoire-pdf/{id}
+    defaults: { _controller: ProcashGestionBundle:Default:factureProvisoirePdf }
+    requirements:
+        id: \d+
+    

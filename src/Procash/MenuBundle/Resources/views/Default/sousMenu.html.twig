@@ -1,0 +1,29 @@
+{% set i = 0 %}
+{% for menu in menus %}
+    {% set menuPplActif = '' %}
+        {% set menuPplChemin = 'javascript:void(0);' %}
+    {% if menu.actif %}
+            {% set menuPplActif = 'active' %}
+        {% endif %}
+    {% if menu.route|length %}
+        {#{% set menuPplChemin = path(menu.route) %}#}
+    {% endif %}
+
+<div class="sous-menu-icon" style="display: inline-block">
+    <a class="sous-menu-image {% if menu.actif|length %}menu-actif-sous-menu{% endif %}" style="font-size:12px; font-weight: bold; color: rgb(77,77,77); margin-right: 6px;
+       text-decoration: none; outline:none" href="{{ path(menu.route) }}" title="{{ menu.libelle }}" {% if menu.libelle == "Rouage" %}href="{{path('rouage')}}" role="button" data-target="#myModal" data-toggle="modal" {% endif %}>
+        <img src='{{asset('bundles/communs/images/'~menu.imgMenu~'_test.png')}}'/>
+        <span style="margin-left: 0px;"><b>{{ menu.libelle }}</b></span>
+    </a>
+</div>
+
+<div id="myModal" class="modal fade" role="dialog">
+    <div class="modal-dialog  modal-md">
+
+        <div class="modal-content">
+
+            <div class="loading"><div class="" style="margin-left:42%;margin-bottom: 10px;margin-top:10px;"><img src="{{ asset('bundles/communs/images/ajax-loader.gif') }}"  > Chargement en cours...</div></div>
+        </div>
+    </div>
+</div>
+{% endfor %}

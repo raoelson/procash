@@ -1,0 +1,72 @@
+<div class="modal-header modal-header-default">
+    <div style="text-align:left">        
+        <h4 class="modal-title" style="font-size:18px;">Modifier un titre</h4>
+    </div>      
+</div>
+<form method="post" action="{{ path('modifier_titre',{ 'id' : titre.id }) }}"  class="form-horizontal">
+    <div class="modal-body">    
+        <div class="form-horizontal">
+            <div class="form-group">
+                <label for="refTitre" class="col-sm-2 control-label"  style="color:black !important;"> {{ form_label(form.refTitre) }}                      
+                </label>    
+                <div class="col-sm-8">
+                    {{ form_widget(form.refTitre , {'attr': {'class': 'form-control input-sm','placeholder':'Ref.Titre'} } ) }}
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="nom" class="col-sm-2 control-label">  {{ form_label(form.nom) }} :</label>
+                <div class="col-sm-8">
+                    {{ form_widget(form.nom) }}
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="periode" class="col-sm-2 control-label pull-left" style="color:black !important;"> {{ form_label(form.periode) }}  :                     
+                </label>
+                <div class="col-sm-8">
+                    {{ form_widget(form.periode, {'attr': {'class': 'form-control input-sm ','placeholder':'Période'} } )  }}        
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="" class="col-sm-2 control-label pull-left" style="color:black !important;">{{ form_label(form.quantiteMinimum) }}  :                     
+                </label>
+                <div class="col-sm-8" id="quantMin">
+                    {{ form_widget(form.quantiteMinimum, {'attr': {'class': 'form-control input-sm ','placeholder':'Quantité min.'} } )  }}     
+                    <span id="imgAbo" class="glyphicon glyphicon-warning-sign form-control-feedback hidden" style="color: rgb(218, 73, 57); left: 495px;"></span>
+                </div>                  
+            </div>
+            <div class="col-sm-12 no-padding container " >
+                    <div class="form-group afficherErreurMontant hide" style="margin-left: 8px;">
+                        <div class="alert alert-danger" role="alert" style="margin: -11px 0px -11px 146px; padding-bottom: 1px; padding-left: 3px; padding-top: 0px; width: 275px; height: 21px;"><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                            <label style=" font-size: 13px;">
+                                Veuillez saisir une quantité valide.
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+            <div class="form-group">
+                <label for="" class="col-sm-2 control-label pull-left" style="color:black !important;">{{ form_label(form.descriptif) }}  :                     
+                </label>
+                <div class="col-sm-8">
+                    {{ form_widget(form.descriptif, {'attr': {'class': 'form-control input-sm ','placeholder':'Déscriptif'} } )  }}      
+
+                </div>
+            </div>
+        </div>
+
+        <div class="hide">{{ form_rest(form) }}</div>
+
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Annuler</button>
+        <button type="submit" class="btn btn-primary submitButton">Valider</button>
+    </div>
+</form>
+<script>
+    $('body').on('hidden.bs.modal', '.modal', function () {
+        $(this).removeData('bs.modal');
+        $('#modalModifierTitre .modal-dialog .modal-content').html(' <div class="loading"><div class="" style="margin-left:42%;margin-bottom: 10px;margin-top:10px;"><img src="{{ asset('bundles/communs/images/ajax-loader.gif') }}"  > Chargement en cours...</div></div>');
+    });
+</script>
+  <script src="{{ asset('bundles/AdministrationBundle/Titre/modifierTitre.js') }}" type="text/javascript"></script>

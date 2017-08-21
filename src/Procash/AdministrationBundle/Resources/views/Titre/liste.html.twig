@@ -1,0 +1,111 @@
+{% extends '::base.html.twig' %}
+{% block title %}Référentiel > Titres{% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+        .popover {
+            font-size: 11px !important;
+            font-weight : bold;
+        }
+    </style>
+    <link rel="stylesheet" href="{{ asset('bundles/communs/css/jquery.dataTables.min.css') }}" type="text/css" /> 
+{% endblock %}
+
+{% block body %}
+    {{ parent()}}
+    <section class="content-header">
+        <h1>
+            Gestion titres
+        </h1>
+    </section>
+    <div class="row">
+        <div style="text-align: center; margin-bottom:10px">
+
+            Ajouter titre <a href="{{path('creer_titre')}}" role="button" data-target="#myModalTitre"  data-toggle="modal"><img src="{{ asset('bundles/communs/images/icone_ajouter_titre.png') }}" alt="contrat_create">
+            </a>             
+        </div>
+    </div>
+    <div class="row">       
+        <table id="example" class="display{# dataTable table-striped table-hover table-responsive table-condensed"#}" cellspacing="0" width="100%" style="margin-top: 20px;">
+            <thead class="thead-inverse">
+                <tr style="height: 42px;">
+                    <th>Ref titre</th>
+                    <th>Nom</th>
+                    <th>Période</th>
+                    <th>Quantité minimum</th>
+                    <th>Descriptif</th>
+                    <th style="width: 15%;">Actions</th>
+                </tr>
+                <tr id="filterrow" style="height: 41px; background-color: #FFF;">
+                    <th>Ref titre</th>
+                    <th>Nom</th>
+                    <th>Période</th>
+                    <th>Quantité minimum</th>
+                    <th>Descriptif</th>
+                    <th style="width: 15%;">Actions</th>
+                </tr>
+            </thead>           
+            <tbody>
+            <form id="titre" class="form-horizontal col-lg-12 col-md-12" action="" method="post" {{form_enctype(form)}} role="form">
+                {% for titre in listeTitre%}
+                    <tr>
+                        <td>{{titre.refTitre}}</td>
+                        <td>{{titre.nom}}</td>
+                        <td>{{titre.periode}}</td>
+                        <td>{{titre.quantiteMinimum}}</td>
+                        <td>{{titre.descriptif}}</td>
+                        <td>
+                            <a href="{{ path('modifier_titre',{ 'id' : titre.id }) }}" data-toggle="modal" data-target="#modalModifierTitre" title="Modifier titre" ><span class="glyphicon glyphicon-pencil text-info btn-lg"></span></a>
+                            <a class="supprimer" data-toggle="modal" data-target="#suppressionModal_{{titre.id}}" title="Supprimer titre"onClick="$('#suppresionModal_{{titre.id}}').modal('show');" href="javascript:void(0);">
+                                <span class="glyphicon glyphicon-remove text-danger btn-lg"> 
+                                </span>
+                            </a>
+                        </td>
+                    </tr>  
+
+                    <div id="modalModifierTitre" class="modal fade" role="dialog">
+                        <div class="modal-dialog  modal-lg" style="width: 770px;">
+                            <div class="modal-content">
+                                <div class="loading"><div class="" style="margin-left:42%;margin-bottom: 10px;margin-top:10px;"><img src="{{ asset('bundles/communs/images/ajax-loader.gif') }}"  > Chargement en cours...</div></div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /.modal-suppresion -->
+                    <div  class="modal" id="suppresionModal_{{titre.id}}">
+                        <div class="modal-dialog">
+                            <div class="modal-content panel panel-danger">
+                                <div class="modal-header panel-heading">
+                                    <h4 class="modal-title">Confirmation de suppression</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <p id="modal-message">Voulez-vous vraiment supprimer ce titre?</p>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">Annuler</button>
+                                    <button type="submit" class="btn btn-danger" data-dismiss="modal" onClick="location.href = '{{ path('supprimer_titre', { 'id': titre.id }) }}'">OK</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}{#
+                {{form_rest(form)}}#}
+            </form>
+            </tbody>
+
+        </table>             
+    </div>
+    <div id="myModalTitre" class="modal fade" role="dialog">
+        <div class="modal-dialog  modal-lg" style="width: 770px;">
+            <div class="modal-content">
+                <div class="loading"><div class="" style="margin-left:42%;margin-bottom: 10px;margin-top:10px;"><img src="{{ asset('bundles/communs/images/ajax-loader.gif') }}"  > Chargement en cours...</div></div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block javascripts %}
+    {{parent()}}
+    <script src="{{ asset('bundles/communs/js/jquery.dataTables.min.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('bundles/AdministrationBundle/Titre/titre.js') }}" type="text/javascript"></script>
+{% endblock %}

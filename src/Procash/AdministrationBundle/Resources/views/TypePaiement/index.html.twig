@@ -1,0 +1,120 @@
+
+{% extends "::base.html.twig" %}
+
+{% block title %}Référentiel > Règlements{% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('bundles/communs/css/jquery.dataTables.min.css') }}" type="text/css" />
+    {#    <link rel="stylesheet" href="{{ asset('bundles/communs/css/style_table.css') }}" type="text/css" />#}
+    <link rel="stylesheet" href="{{ asset('bundles/AdministrationBundle/Referentiels/css/type_paiement.css') }}" type="text/css" />
+{% endblock %}
+{% block body %}
+    {{ parent() }}
+    <section class="content-header">
+        <h1>
+            Mode de règlements
+        </h1>
+    </section>
+    <div class="row position-standard">
+        <form class="form-horizontal col-lg-12 col-md-12 no-padding" method="POST" role="form" action="javascript:void(0);">
+            <table id="example" class="display" cellspacing="0" width="100%">
+                <thead class="thead-inverse">
+                    <tr>
+                        <th>Libellé du mode de règlement</th>
+                        <th>Code règlement</th>
+                        <th class="action">Actions</th>
+                    </tr>
+                </thead>
+                <thead>
+                    <tr style="height: 42px; background-color: #FFF;">
+                        <th><input type="text" name="typePaiement[0][libelle]" value="" class="form-control modeReglement" placeholder="Entrez un mode de paiement" />
+                            <span class='erreurLibelle hide' style='color: red; font-size: 11px;font-weight:bold;'>(Le libellé saisi existe déjà!)</span>
+                        </th>
+                        <th> <select id="selectCode" class="form-control input-sm" name="typePaiement[0][code]">
+                                <option>Sélectionnez un code de règlement..</option>
+                                <option value="CHQ">CHQ</option>
+                                <option value="ESP">ESP</option>
+                                <option value="TRE">TRE</option>
+                            </select>
+                        </th>
+                        <th>
+                <div id="ajouterPaiement">
+                    <input id="btn_ajouter" type="submit" name="typePaiement[0][ajouter]" value="+" class="btn btn-default ajouter hide" />
+                    <div style="margin-left: -51px;" id="img_ajouter"><img src='{{ asset('bundles/communs/images/plus.png') }}' width='22px'/></div>
+                </div>
+                <div id="ajouterPaiementHidden" class="hide" >
+                    <input class="btn btn-default hide" />
+                    <img style="margin-left: 4px;" src='{{ asset('bundles/communs/images/gris_plus.png') }}' width='22px'/>
+                </div>
+                </th>
+                </tr>
+                </thead>
+                <tbody>
+                    {% for typePaiement in typesPaiementsExistants %}
+                        <tr>
+                    <input type="hidden" name="typePaiement[{{ loop.index }}][id]" value="{{ typePaiement.id }}" />
+                    <td><input type="text" name="typePaiement[{{ loop.index }}][libelle]" value="{{ typePaiement.libelle }}" id="mr_{{ typePaiement.id }}" class="form-control modeReglementModif" placeholder="Entrez un type de paiement" required="required" /></td>
+                    <td>
+                        <select class="form-control input-sm selectmodeReglementModif" id="mrSelect_{{ typePaiement.id }}" name="typePaiement[{{ loop.index }}][code]">
+                            <option></option>
+                            <option value="CHQ" {% if typePaiement.code == 'CHQ' %}selected{% endif %}>CHQ</option>
+                            <option value="ESP" {% if typePaiement.code == 'ESP' %}selected{% endif %}>ESP</option>
+                            <option value="TRE"{% if typePaiement.code == 'TRE' %}selected{% endif %}>TRE</option>
+                        </select>
+                    </td>
+                    <td class="text-center">
+                        {#                    <input type="submit" name="typePaiement[{{ loop.index }}][modifier]" value="✏" class="btn btn-default modifier" />#}
+                        <button type="submit" name="typePaiement[{{ loop.index }}][modifier]" class="btn btn-default modifier" title="Modifier mode de règlement" style="padding: 0 !important;"><i class="glyphicon glyphicon-floppy-disk btn-lg icone-enregistrer" ></i></button>
+                            {% if typePaiement.supprimable %}
+                            <button type="button" class="btn btn-default supprimer" data-dismiss="modal" data-toggle="modal" title="Supprimer mode de règlement" data-target="#confirmation{{ loop.index }}"></button>
+                        {% else %}
+                            <a style="padding: 10px 16px;" href="javascript:void(0)" class="glyphicon glyphicon-info-sign  plus" rel="popover" data-placement="left" data-content="Impossible de supprimer ce mode de règlement." data-trigger="hover" ></a>
+                        {% endif %}
+                        <div class="modal" id="confirmation{{ loop.index }}">
+                            <div class="modal-dialog">
+                                <div class="modal-content panel panel-danger">
+                                    <div class="modal-header panel-heading">
+                                        <h4 class="modal-title">Confirmation de suppression</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <p id="modal-message" class="text-danger">Êtes-vous certain de vouloir supprimer le mode de règlement <strong>'{{ typePaiement.libelle }}'</strong> ?</p>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">Non</button>
+                                        <input onclick="addCache();
+                                            $('#confirmation{{ loop.index }}').modal('hide')" type="submit" name="typePaiement[{{ loop.index }}][supprimer]" value="Oui" class="btn btn-default btn-danger" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </form>
+    </div>   
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('bundles/communs/js/jquery.dataTables.min.js') }}" type="text/javascript"></script>
+    <script>
+                                        var tableLibelle = new Array();
+                                        var tableCode = new Array();
+        {% for typePaiement in typesPaiementsExistants %}
+            var libelle = "{{typePaiement.libelle}}";
+            var code = "{{typePaiement.code}}";
+            tableLibelle.push(libelle);
+            tableCode.push(code);
+        {% endfor %}
+    </script>
+    <script>
+        $('#img_ajouter').click(function () {
+            $('input#btn_ajouter').trigger("click");
+        });
+        $('[data-toggle="popover"]').popover();
+        $('.pop').popover();
+        $('.plus').popover();
+    </script>
+    <script src="{{ asset('bundles/AdministrationBundle/Referentiels/js/type_paiement.js') }}" type="text/javascript"></script>
+{% endblock %}

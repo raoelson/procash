@@ -1,0 +1,46 @@
+{#
+<div style="margin-top: 35px">
+    {% for menu in menus %}
+        <a class="principal-menu-image {% if menu.actif|length %}menu-actif-pricipale{% endif %}" style="font-size:12px; font-weight: bold; color: rgb(77,77,77);
+           text-decoration: none; margin-right: 4px; outline:none;" href="{{ path(menu.route) }}" class="" title="{{ menu.libelle }}">            
+            <img src='{{asset('bundles/communs/images/'~menu.imgMenu~'_test.jpeg')}}'/>
+            <span style="margin-left: 2px">{{ menu.libelle }}</span>
+        </a>
+    {% endfor %}
+</div>
+#}
+{% for menu in menus %}
+    <li class="toggleSubMenu">  
+    <a class="{% if menu.actif|length %} aactive {% endif %}" href="{{ path(menu.route) }}">
+       <span class="{#{% if menu.actif|length %} active {% endif %}#}">{{menu.libelle}}</span> 
+    </a> 
+    
+    {% if menu.libelle == 'ADMINISTRATION' %}
+        <ul class="subMenu">
+            {% for smenu in sousMenuAdm %}
+                {% set menuPplActif = '' %}
+                {% set menuPplChemin = 'javascript:void(0);' %}
+                {% if smenu.actif %}
+                    {% set menuPplActif = 'active' %}
+                {% endif %}
+                {% if smenu.route|length %}
+                    {#{% set menuPplChemin = path(menu.route) %}#}
+                {% endif %}
+                <li id="sousM" class="{% if smenu.actif|length %} aactive {% endif %}" style="margin-top: 5px; margin-bottom: 5px;"><a style="padding-left: 35px;" href="{{ path(smenu.route) }}"><span>{{smenu.libelle }}</span></a></li>
+                {% endfor %}
+        </ul>
+    {% elseif menu.libelle == 'GESTION' %}
+        <ul class="subMenu">
+            {% for smenu in sousMenuGest %}
+                <li class="{% if smenu.actif|length %} aactive {% endif %}" style="margin-top: 5px; margin-bottom: 5px;"><a style="padding-left: 35px;" href="{{ path(smenu.route) }}"><i class=""></i> {{smenu.libelle }}</a></li>
+                {% endfor %}
+        </ul>
+    {% elseif menu.libelle == 'REFERENTIELS' %}
+        <ul class="subMenu">
+            {% for smenu in sousMenuRef %}
+                <li class="{% if smenu.actif|length %} aactive {% endif %}" style="margin-top: 5px; margin-bottom: 5px;"><a style="padding-left: 35px;" href="{{ path(smenu.route) }}"><i class=""></i> {{smenu.libelle }}</a></li>
+                {% endfor %}
+        </ul>
+    {% endif %}
+    </li>
+{% endfor %}

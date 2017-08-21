@@ -1,0 +1,91 @@
+<table>
+    <tr>
+        <td>
+            <table>
+                <tr>
+                    <td>
+                        <table style="border: 1px solid #000; text-align: center;">
+                            <tr><th><h3>{{facturation.client.nom}}</h3></th></tr>
+                            <tr><th>Capital 16.000 €</th></tr>
+                            <tr><th>{{facturation.client.adresse}}</th></tr>
+                            <tr><th>{{facturation.client.complementAdresse}}</th></tr>
+                          {#  <tr><th>RCS St-Dennis B 392510 848</th></tr>#}
+                        </table>   
+                    </td>
+                    <td></td>
+                    <td>
+                        <table style="padding-top: 60px !important;">                          
+                            <tr>
+                                <td style="font-size: 14px;"><strong>N° :</strong>&nbsp;{{ facturation.numeroFacture }}</td>
+                            </tr>
+                        </table>            
+                    </td>
+                </tr>               
+            </table>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <table style="padding-top: 40px !important;">
+                    <tr>
+                        <td>
+                           <table style="padding-left: 250px !important;">
+                                <tr>
+                                    <th>REÇU</th>
+                                </tr>
+                                <tr>
+                                    <th>vaut facture provisoire</th>
+                                </tr>
+                            </table> 
+                        </td>                                            
+                    </tr>
+                    <tr>
+                        <td>
+                            <table>
+                                <tr>
+                                    <td style="width: 65px;">du Client :</td>
+                                    <td style="border-bottom-style: dotted; width: auto;">{{ facturation.client.nom }}</td>
+                                </tr>
+                                <tr><td></td></tr>
+                                <tr>
+                                    <td style="width: 85px; padding-top: 50px !important;">la somme de :</td>
+                                    <td style="border-bottom-style: dotted; width: auto;">{{ facturation.montantEncaisseSaisi }}</td>
+                                </tr>                            
+                            </table>
+                        </td>                    
+                    </tr>                
+                    <tr>
+                        <td style="width: 450px;"></td>
+                        <td>
+                            <table>
+                                <tr>
+                                    <td style="width: 15px;">Le </td>
+                                    <td style="border-bottom-style: dotted; width: 60px;">{{ now|date('d/m/Y') }}</td>
+                                </tr>                            
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+                <table style="padding-top: 10px;">
+                    <tr>
+                        <td>
+                            <table>
+                                <tr>
+                                    <td style="width: 200px;"></td>
+                                    <td>Signature Client</td>
+                                    <td>Signature Chauffeur</td>
+                                </tr>
+                            </table>                        
+                        </td>
+                    </tr>
+                </table>
+                <table style="padding-top: 150px;">
+                    <tr>
+                        <td>
+                            (La facture définitive vous sera adressée ultérieurement)
+                        </td>
+                    </tr>
+                </table> 
+        </td>
+    </tr>
+</table>

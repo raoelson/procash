@@ -1,0 +1,114 @@
+{% extends "::base.html.twig" %}
+
+{% block title %}Profils{% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('bundles/communs/css/jquery.dataTables.min.css') }}" type="text/css" />
+    {#    <link rel="stylesheet" href="{{ asset('bundles/communs/css/style_table.css') }}" type="text/css" />#}
+    <link rel="stylesheet" href="{{ asset('bundles/AdministrationBundle/Referentiels/css/type_paiement.css') }}" type="text/css" />
+{% endblock %}
+{% block body %}
+    {{ parent() }}
+
+    <section class="content-header">
+        <h1>
+            Profils
+        </h1>
+    </section>
+    <div class="row position-standard">
+        <div class="col-lg-12 col-md-12 no-padding">
+            <form class="form-horizontal" method="POST" role="form" action="javascript:void(0);">
+                <table id="example" class="display" cellspacing="0" width="100%">
+                    <thead class="thead-inverse">
+                        <tr>
+                            <th>Libellé du profil</th>
+                            <th>Code </th>
+                            <th class="action">Actions</th>
+                        </tr>
+                    </thead>
+                    <thead>
+                        <tr style="height: 41px; background-color: #FFF;">
+                            <th><input type="text" name="profil[0][libelle]" value="" class="form-control libelleProfil" placeholder="Entrez un libellé" />
+                                <span class='erreurLibelle hide' style='color: red; font-size: 11px;font-weight:bold;'>(Le libellé saisi existe déjà!)</span>
+                            </th>
+                            <th> <select id="selectCode" class="form-control input-sm" name="profil[0][code]">
+                                    <option>Sélectionnez un code ..</option>
+                                    <option value="adm">ADM</option>
+                                    <option value="col">COL</option>
+                                    <option value="ges">GES</option>
+                                    <option value="ope">OPE</option>
+                                </select>
+                            </th>
+                            <th>
+                    <div id="ajouterProfil">
+                        <input id="btn_ajouter" type="submit" name="profil[0][ajouter]" class="btn btn-default ajouter hide" /><div id="img_ajouter">
+                        <img style="margin-left: -50px;" src='{{ asset('bundles/communs/images/plus.png') }}' width='22px'/>
+                        </div>
+                    </div>
+                    <div id="ajouterProfilHidden" class="hide" >
+                        <input class="btn btn-default hide" />
+                        <img style="margin-left: 4px;" src='{{ asset('bundles/communs/images/gris_plus.png') }}' width='22px'/>
+                    </div>
+                    </th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        {% for profil in profilExistants %}
+                            <tr>
+                        <input type="hidden" name="profil[{{ loop.index }}][id]" value="{{ profil.id }}" />
+                        <td><input type="text" name="profil[{{ loop.index }}][libelle]" value="{{ profil.libelle }}" class="form-control libelleProfilModif" id="libP_{{ profil.id }}" placeholder="Entrez un type de paiement" required="required" /></td>
+                        <td>
+                            <select class="form-control input-sm selectCodeModif" id="selectP_{{ profil.id }}" name="profil[{{ loop.index }}][code]">
+                                <option></option>
+                                <option value="adm" {% if profil.code == 'adm' %}selected{% endif %}>ADM</option>
+                                <option value="col" {% if profil.code == 'col' %}selected{% endif %}>COL</option>
+                                <option value="ges"{% if profil.code == 'ges' %}selected{% endif %}>GES</option>
+                                <option value="ope"{% if profil.code == 'ope' %}selected{% endif %}>OPE</option>
+                            </select>
+                        </td>
+                        <td>
+                            {#                    <input type="submit" name="profil[{{ loop.index }}][modifier]" value="✏" class="btn btn-default modifier" />#}
+                            <button type="submit" name="profil[{{ loop.index }}][modifier]" title="Modifier profil" class="btn btn-default modifier" /><i class="glyphicon glyphicon-floppy-disk btn-lg icone-enregistrer"></i></button>
+                            {#<span class="glyphicon glyphicon-floppy-disk btn-lg modif" style="cursor: pointer; color: blue; padding: 0 !important;"></span>#}
+                            <button type="button" class="btn btn-default supprimer" data-dismiss="modal" data-toggle="modal" title="Supprimer profil" data-target="#confirmation{{ loop.index }}"></button>
+                            <div class="modal" id="confirmation{{ loop.index }}">
+                                <div class="modal-dialog">
+                                    <div class="modal-content panel panel-danger">
+                                        <div class="modal-header panel-heading">
+                                            <h4 class="modal-title">Confirmation de suppression</h4>
+                                        </div>
+                                        <div class="modal-body">
+                                            <p id="modal-message" class="text-danger">Êtes-vous certain de vouloir supprimer le profil <strong>'{{ profil.libelle }}'</strong> ?</p>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-default" data-dismiss="modal">Non</button>
+                                            <input onclick="addCache();
+                                                    $('#confirmation{{ loop.index }}').modal('hide')" type="submit" name="profil[{{ loop.index }}][supprimer]" value="Oui" class="btn btn-default btn-danger" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </form>
+        </div>
+    </div>
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('bundles/communs/js/jquery.dataTables.min.js') }}" type="text/javascript"></script>
+    <script>
+                                                $('#img_ajouter').click(function () {
+                                                    $('input#btn_ajouter').trigger("click");
+                                                });
+                                                var tableLibelle = new Array();
+        {% for profil in profilExistants %}
+            var libelle = "{{profil.libelle}}";
+            tableLibelle.push(libelle);
+        {% endfor %}
+    </script>
+    <script src="{{ asset('bundles/AdministrationBundle/Profil/js/action_profil.js') }}" type="text/javascript"></script>
+{% endblock %}

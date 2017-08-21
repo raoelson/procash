@@ -1,0 +1,104 @@
+{% extends "::base.html.twig" %}
+{% block title %}Gestion de version{% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('bundles/communs/css/jquery.dataTables.min.css') }}" type="text/css" />
+    <style>
+        tbody > tr {
+            background-color: #FFF !important;
+            height: 41px;
+        }
+        tbody > tr > td {
+            border: 1px solid #CCC !important;
+            vertical-align: middle !important;
+        }
+        tbody > tr > th {
+            vertical-align: middle !important;
+            height: 42px;
+            margin-left: 20px;
+        }
+        #parcourir_fichier{
+            background-image: url({{ asset('bundles/communs/images/parcourir.png') }});
+            margin-top: -25px;
+            min-width: 87px;
+            min-height: 24px;
+        }
+        input[type="file"]:focus {
+            outline: none;
+            display: none;
+        }
+    </style>
+{% endblock %}
+{% block body %}
+    {{ parent() }}
+    <section class="content-header">
+        <h1>
+            Gestion de version
+        </h1>
+    </section>
+    <div class="row">
+        <form action="{{ path('procash_gestion_version_liste') }}" method="post" {{ form_enctype(form) }}>
+            <div class="col-md-5 form-group">
+                {{ form_widget(form)}}
+            </div>
+            <div class=" col-md-7 hide">
+                <input type="text" value="{{ancienVersion}}" name="ancienVersion"/>
+            </div>
+            <input type="submit" value="Enregistrer" id="btnEnvoye" class="btn btn-primary" style="margin-top: 60px!important;"/>
+            <div id="showErreur"  style="margin-top: -22px; position:absolute; margin-left:35%"></div>
+        </form>
+    </div>
+    <div class="row">
+        {#    {% if versions | length > 0  and versions in not null %}#}
+        {% if versions is not null and versions | length > 0 %}
+            <table class="table table-condensed" id="tableGestionVersion">
+                <thead>
+                    <tr>
+                        <th style="border-right:2px solid white;">Version(s)</th>
+                        <th style="border-right:2px solid white;">Date de création</th>
+                        <th>Etat</th>   
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for v in versions %}  
+                        <tr>
+                            <td>{{ v.version| replace({'-': "."}) }}</td>
+                            <td>{{ v.dateCreation | date('d/m/Y H:m:s') }}</td>
+                            <td><div style="text-align: center; margin-left: 45%" class="{% if v.actif %} full-circle-green {% else %} full-circle-red {% endif %}" ></div>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% endif %}
+    </div>
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('bundles/communs/js/jquery.dataTables.min.js') }}" type="text/javascript"></script>
+    <script>
+               $('div#procash_administrationbundle_gestionversion_version label').css('margin-right', '15px');
+               $('input#btnEnvoye').prop('disabled', true);
+               $('input#btnEnvoye').attr('disabled', 'disabled');
+               $('#procash_administrationbundle_gestionversion_file').change(function () {
+                   var pathFichier = $(this).val();
+                   var nomFichier = pathFichier.split("\\").pop();
+                   var ext = nomFichier.split(".").pop();
+                   if (ext == 'apk') {
+                       $('input#btnEnvoye').prop('disabled', false);
+                       $('input#btnEnvoye').removeAttr('disabled');
+                       $('span#erreurExt').remove();
+                   } else {
+                       $('input#btnEnvoye').prop('disabled', true);
+                       $('input#btnEnvoye').attr('disabled', 'disabled');
+                       if ($('div#showErreur').is(':empty')) {
+                           $('div#showErreur').prepend("<span class='label label-danger' id='erreurExt' >L'extension du fichier n'est pas valide.</span>");
+                       }
+                   }
+               });
+               
+               $('#parcourir_fichier').click(function(){
+                   $('#procash_administrationbundle_gestionversion_file').trigger("click");
+               });
+    </script>
+{% endblock %}

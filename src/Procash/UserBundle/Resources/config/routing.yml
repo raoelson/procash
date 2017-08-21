@@ -1,0 +1,18 @@
+utilisateur :
+    path: /administration/utilisateurs
+    defaults: { _controller: ProcashUserBundle:Default:index }
+    
+creer_utilisateur :
+    path: /administration/utilisateur/ajouter
+    defaults: { _controller: ProcashUserBundle:Default:ajouter }
+    
+modifier_utilisateur:
+    path: /administration/utilisateur/{id}/modifier
+    defaults: { _controller: ProcashUserBundle:Default:modifier }
+    requirements:
+        id: \d+
+supprimer_utilisateur:
+    path: /administration/utilisateur/{id}/supprimer
+    defaults: { _controller: ProcashUserBundle:Default:supprimer }
+    requirements:
+        id: \d+

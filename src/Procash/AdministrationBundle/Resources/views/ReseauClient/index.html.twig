@@ -1,0 +1,51 @@
+{% extends '::base.html.twig' %}
+{% block title %}Référentiel > Réseaux/Clients{% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('bundles/communs/css/jquery.dataTables.min.css') }}" type="text/css" /> 
+    <style>
+        .sansBordure {
+            border:0px solid #ddd !important;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+    {{ parent()}}
+    <section class="content-header">
+        <h1>
+            Réseaux/Clients
+        </h1>
+    </section>
+    <div class="row position-standard">       
+        <table id="example" class="display" cellspacing="0" width="100%">
+            <thead class="thead-inverse">
+                <tr>
+                    <th>Réseaux</th>
+                    <th>Clients</th>                   
+                </tr>
+            </thead>
+            <tbody>
+                {% for reseau in listeReseaux %}
+                    <tr style="height: 30px; background-color: #fff;">
+                        <td style="background-color: #fff;">{{reseau.libelle}}</td>
+                        <td>
+                            <table style="margin-left: -10px;">
+                                {% for client in reseau.clients %}
+                                    <tr class="sansBordure">
+                                        <td class="sansBordure" style="width:100% ;text-align:left;padding: 8px;">{% if client|length > 0 %}{{client.id}} - {{client.nom}} {{client.prenom}} - {{client.adresse}}{% else %}-{% endif %}</td>
+                                    </tr>
+                                {% endfor %} 
+                            </table>
+                        </td>  
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>             
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{parent()}}
+    <script src="{{ asset('bundles/AdministrationBundle/ReseauClient/reseau_client.js') }}" type="text/javascript"></script>
+{% endblock %}

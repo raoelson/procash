@@ -1,0 +1,25 @@
+table#example{
+    border-bottom-width: 0px ! important;
+}
+table thead tr th{
+    text-align: center !important;
+}
+table thead td{
+    border-bottom-color: #e0e0e0 !important;
+}
+table thead tr[role="row"] {
+    /*background: #337ab7 !important;*/
+    background: #57554f !important;
+    color: #fff !important;
+    /*height: 20px;*/
+}
+input[type="text"]{
+    background: none;
+    border: none !important;
+    background-image: none !important;
+    box-shadow: none !important;
+}
+input[type="text"]:focus{
+    border-bottom: 1px solid gray !important;
+    border-radius: 0 !important;
+}     

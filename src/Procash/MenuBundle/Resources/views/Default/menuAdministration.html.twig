@@ -1,0 +1,25 @@
+{% block meta %}
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+{% endblock %}
+{% block title %}
+    {{ parent() }} - Gestion
+{% endblock %}
+
+{% block stylesheets %}
+    {{parent()}}
+{% endblock %}
+
+{% block body %}
+    {{ parent() }}
+    <div class="form-user-add-edit container mpv">
+        <h3 class="col-xs-12">{% trans %}Administration{% endtrans %}</h3>
+        
+{#        {% render(controller('SiaMenuBundle:Default:menuPave', { 'routeCourante': app.request.get('_route') })) %}#}
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+
+{% endblock %}

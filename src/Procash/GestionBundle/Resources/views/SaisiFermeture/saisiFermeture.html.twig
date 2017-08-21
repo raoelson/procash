@@ -1,0 +1,166 @@
+{% extends "::base.html.twig" %}
+
+{% block title %}Fermeture{% endblock %}
+{% block stylesheets %}
+    {{parent()}}
+<style type="text/css">
+    thead th, table thead td{
+        border-bottom: 2px solid #ddd !important;
+    }
+    table.dataTable.no-footer{
+        border-bottom: 2px solid #ddd !important;
+    }
+    .btnModifier {
+        color: blue;
+    }
+    .btnSupprimer::before {
+        content: "\e014";
+        color: red;
+    }
+
+</style>
+<link rel="stylesheet" href="{{ asset('bundles/communs/css/jquery.dataTables.min.css') }}" type="text/css" />
+
+{% endblock %}
+{% block body %}
+    {{ parent()}}
+<section class="content-header">
+    <h1>
+        Fermetures
+    </h1>
+</section>
+<div class="row filtre" style="margin-top: 5px;">
+{#    <div class="col-md-10">#}
+    <form method="post" class="form-inline">
+        <div class="col-md-2">
+            <select class="select2"  name="filtre[client]" >
+                <option value="">Tous les clients</option>
+                    {% for c in listesClients %}
+                <option value="{{c.id}}"{% if client is defined and c.id == client %}selected{% endif %}>{{c.nom}} - {{c.prenom}}</option>
+                    {% endfor %}
+            </select>
+        </div>
+        <div class="col-md-2">
+            <select id="motif"  class="select2"  name="filtre[motif]" >
+                <option value="">Tous les motifs</option>
+                    {% for m in listeMotifFermeture %}
+                <option value="{{m.id}}"{% if motif is defined and m.id == motif %} selected {% endif %}>{{m.libelle}}</option>
+                    {% endfor %}
+            </select>      
+        </div>
+        <div class="col-md-2">
+            <input type="text" id="dateDebut"  placeholder="Date début" class="form-control" name="filtre[date_debut]" value="{% if dateDebut is defined %}{{ dateDebut }}{% endif %}"/>
+        </div>
+        <div class="col-md-2">
+            <input type="text" id="dateFin"  placeholder="Date fin" class="form-control" name="filtre[date_fin]" value="{% if dateFin is defined %}{{ dateFin }}{% endif %}" />
+        </div>
+        <div class="col-md-2">
+            <button class="btn btn-default btn-primary input-sm btn-margin-left" type="submit">Filtrer</button>
+        </div>
+    </form>
+{#    </div>#}
+    <div class="col-md-2 pull-right">
+        <div style="font-size: 16px; white-space: nowrap; margin-left: 0px;">
+            <label style="font-weight : bold;"> Ajouter fermeture </label>
+            <a href="{{path('procash_ajouter_fermeture')}}" role="button" data-target="#myModalFermeture"  data-toggle="modal"><img src="{{ asset('bundles/communs/images/plus.png') }}" alt="contrat_create"></a>
+        </div>
+    </div>                
+</div>
+<div class="row">       
+    <table id="example" class="display dataTable table-striped table-hover table-responsive table-condensed" cellspacing="0" width="100%" style="margin-top: 20px;">
+        <thead class="thead-inverse">
+            <tr>
+                <th>Client</th>
+                <th>Date début</th>
+                <th>Date fin</th>
+                <th>Motif</th>
+                <th style="width: 15%;">Actions</th>
+            </tr>
+            <tr id="filterrow" class="hide">
+                <th>Client</th>
+                <th>Date début</th>
+                <th>Date fin</th>
+                <th>Motifd</th>
+                <th class="action">Actions</th>
+            </tr>
+        </thead>           
+        <tbody>
+        <form id="titre" class="form-horizontal col-lg-12 col-md-12" action="" method="post" {{form_enctype(form)}} role="form">
+                {% for fermeture in listeFermeture %}
+            <tr>
+                <td>{% if fermeture.client is not null %}{{fermeture.client.nom}}{% else %}-{% endif %}</td>
+                <td>
+                    <span class="hide">{{fermeture.dateDebutFermeture|date('Y-m-d')}}</span>
+                            {{fermeture.dateDebutFermeture|date('d/m/Y')}}
+                </td>
+                <td>
+                    <span class="hide">{{fermeture.dateFinFermeture|date('Y-m-d')}}</span>
+                            {{fermeture.dateFinFermeture|date('d/m/Y')}}
+                </td>
+                <td>{{fermeture.motifFermeture.libelle}}</td>
+                <td>
+                    <a href="{{ path('procash_modifier_fermeture',{ 'id' : fermeture.id }) }}" data-toggle="modal" data-target="#modalModifierFermeture" title="Modifier fermeture" ><span class="glyphicon glyphicon-pencil text-info btn-lg modif"></span></a>
+                    <a class="supprimer" data-toggle="modal" data-target="#suppressionModal_{{fermeture.id}}" title="Supprimer fermeture"onClick="$('#suppresionModal_{{fermeture.id}}').modal('show');" href="javascript:void(0);">
+                        <span class="glyphicon glyphicon-remove text-danger btn-lg btnSupprimer"></span>
+                    </a>
+                </td>
+            </tr>  
+
+            <div id="modalModifierFermeture" class="modal fade" role="dialog">
+                <div class="modal-dialog  modal-lg" style="width: 770px;">
+                    <div class="modal-content">
+                        <div class="loading"><div class="" style="margin-left:42%;margin-bottom: 10px;margin-top:10px;"><img src="{{ asset('bundles/communs/images/ajax-loader.gif') }}"  > Chargement en cours...</div></div>
+                    </div>
+                </div>
+            </div>
+            <!-- /.modal-suppresion -->
+            <div  class="modal" id="suppresionModal_{{fermeture.id}}">
+                <div class="modal-dialog">
+                    <div class="modal-content panel panel-danger">
+                        <div class="modal-header panel-heading">
+                            <h4 class="modal-title">Confirmation de suppression</h4>
+                        </div>
+                        <div class="modal-body">
+                            <p id="modal-message">Voulez-vous vraiment supprimer cette fermeture?</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Non</button>
+                            <a onclick="addCache();
+                                    $('#suppresionModal_{{ fermeture.id }}').modal('hide')" href="{{ path('procash_supprimer_fermeture', { 'id': fermeture.id }) }}" class="btn btn-danger"  id="btn-supprimer">Oui</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+                {% endfor %}{#
+                {{form_rest(form)}}#}
+        </form>
+        </tbody>
+
+    </table>             
+</div>
+<div id="myModalFermeture" class="modal fade" role="dialog">
+    <div class="modal-dialog  modal-lg" style="width: 770px;">
+        <div class="modal-content">
+            <div class="loading"><div class="" style="margin-left:42%;margin-bottom: 10px;margin-top:10px;"><img src="{{ asset('bundles/communs/images/ajax-loader.gif') }}"  > Chargement en cours...</div></div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block javascripts %}
+    {{parent()}}
+<script>
+    var listeFermetures = [];
+    {% for fermeture in listeFermeture %}
+    var ddBase = "{{fermeture.dateDebutFermeture|date('d/m/Y')}}";
+    var dfBase = "{{fermeture.dateFinFermeture|date('d/m/Y')}}";
+    var objFermeture = {"user":{{fermeture.client.id}}, "dd": ddBase, "df": dfBase};
+    listeFermetures.push(objFermeture);
+    {% endfor %}
+{#    $('#dateDebut').attr('readonly', true);#}
+    $('#dateDebut').css('background-color', '#FFF');
+  {#  $('#dateFin').attr('readonly', true);#}
+    $('#dateFin').css('background-color', '#FFF');
+</script>
+<script src="{{ asset('bundles/communs/js/jquery.dataTables.min.js') }}" type="text/javascript"></script>
+<script src="{{ asset('bundles/GestionBundle/js/Fermeture/saisiFermeture.js') }}" type="text/javascript"></script>
+{% endblock %}

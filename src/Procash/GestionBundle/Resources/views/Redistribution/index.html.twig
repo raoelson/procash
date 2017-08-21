@@ -1,0 +1,46 @@
+{% extends "::base.html.twig" %}
+
+{% block title %}Redistributions{% endblock %}
+{% block stylesheets %}
+    {{parent()}}
+    <link rel="stylesheet" href="{{ asset('bundles/communs/css/jquery.dataTables.min.css') }}" type="text/css" /> 
+{% endblock %}
+{% block body %}
+    {{ parent()}}
+    <section class="content-header">
+        <h1>
+            Redistributions
+        </h1>
+    </section>    
+    <div class="row filtre">
+        <div class="col-md-12">
+            <table id="redistribution" class="display dataTable table-striped table-hover table-responsive table-condensed" cellspacing="0" width="100%" style="margin-top: 20px;">
+            <thead class="thead-inverse">
+                <tr>
+                    <th>Date</th>
+                    <th>Dépositaire redistribué</th>
+                    <th>Client remplacement</th>
+                    <th>Titre</th>
+                    <th>Nombre</th>                    
+                </tr>                
+            </thead>
+            <tbody>
+                {% for redistribution in redistributions %}
+                    <tr>
+                        <td>
+                            {{ redistribution.dateHeureSaisie | date('d/m/Y')  }}
+                        </td>
+                        <td>{{ redistribution.clientRedistribue.nom}}</td>
+                        <td>{{ redistribution.clientRemplace.nom }}</td>
+                        <td>{{ redistribution.titreADistribuer.libelle}}</td>
+                        <td class="text-center">{{ redistribution.commandeSaisie}}</td>          
+                    {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    </div>
+{% endblock %}
+{% block javascripts %}
+    {{parent()}}    
+    <script type="text/javascript" src="{{asset('bundles/GestionBundle/js/Redistributions/redistributions.js') }}"></script>
+{% endblock %}

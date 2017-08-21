@@ -1,0 +1,33 @@
+.btn.ajouter, .btn.modifier, .btn.supprimer {
+    font-family: "Glyphicons Halflings";
+    background-color: transparent;
+    border: 0 none transparent;
+    font-weight: bold;
+}
+.btn.ajouter {
+    color: green;
+}
+.btn.modifier {
+    color: #1B7EA0;
+}
+.btn.supprimer::before {
+    content: "\e014";
+    color: red;
+}
+form table thead tr {
+    height: 40px !important;
+}
+form table tr th {
+    padding: 8px !important;
+}
+form table tr td {
+    padding: 4px !important;
+}
+form table tr td .form-control {
+    background-color: transparent;
+    border: 0 none transparent;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0) inset;
+    height: 30px;
+    padding: 4px;
+    font-family: calibri;
+}

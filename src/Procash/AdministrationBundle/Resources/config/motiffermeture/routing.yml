@@ -1,0 +1,3 @@
+procash_motif_fermeture_liste:
+    path:     /motifs-de-fermeture
+    defaults: { _controller: ProcashAdministrationBundle:MotifFermeture:index }

@@ -1,0 +1,18 @@
+procash_liste_fermeture :
+    path: /fermeture
+    defaults: { _controller: ProcashGestionBundle:SaisiFermeture:saisiFermeture }
+
+procash_ajouter_fermeture:
+    path: /fermeture/ajouter
+    defaults: { _controller: ProcashGestionBundle:SaisiFermeture:ajouter }
+
+procash_modifier_fermeture:
+    path: /fermeture/{id}/modifier
+    defaults: { _controller: ProcashGestionBundle:SaisiFermeture:modifier }
+    requirements:
+        id: \d+
+procash_supprimer_fermeture:
+    path: /fermeture/{id}/supprimer
+    defaults: { _controller: ProcashGestionBundle:SaisiFermeture:supprimer }
+    requirements:
+        id: \d+

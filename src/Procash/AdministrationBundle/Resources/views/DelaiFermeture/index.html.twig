@@ -1,0 +1,57 @@
+{#{% extends "::base.html.twig" %}#}
+{#
+{% block title %}Référentiel > Délai et seuil de fermeture{% endblock %}#}
+{#{% block stylesheets %}
+    {{ parent() }}
+{% endblock %}#}
+{% block body %}
+    {#    {{ parent() }}#}
+    <section class="content-header">
+        <h1>
+            Motifs de fermeture
+        </h1>
+    </section>            
+    <div class="row" style="margin-top: 10px;">       
+        <form method="post" action="{{ path('procash_ajouter_delaifermeture') }}" class="form-inline text-center">
+            <div class="col-md-4 no-padding" style="margin-top: 22px;"> 
+                <span style="position: relative; top: 6px; font-size: 16px; margin-left: -6px; font-weight: bold;">Délai et seuil de fermeture:</span>
+                <div class="alert alert-danger hide erreurSeuilDelai" role="alert" id="erreurSeuilDelai" style="margin-top: 2%; margin-bottom: 0;">
+                    <label style=" font-size: 12px;">
+                        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                        Le seuil maximun doit être supérieur au délai minimun
+                    </label>
+                </div>                
+            </div>
+            <div class="col-md-2 form-group no-padding" style="margin-left: 20px;">
+                <div class="row">
+                    <div>{{ form_label(form.delaiMin) }}</div>
+                    <div>{{ form_widget(form.delaiMin) }}</div>
+                </div>  
+            </div>
+            <div class="col-md-2 form-group no-padding" style="margin-left: 20px;">
+                <div class="row">
+                    <div>{{ form_label(form.seuilMax) }}</div>
+                    <div>{{ form_widget(form.seuilMax) }}</div>
+                </div>
+            </div>          
+            <div class="col-md-2" style="margin-top: 30px;">
+                <input type="submit" id="saveDelaiFermeture" onclick="addCacheSeuil()" name="valider" class="btn btn-default btn-primary" value="Enregistrer" />
+            </div>
+        </form>
+    </div>
+{% endblock %}  
+{% block javascripts %}
+    <script>
+        {% if delaiSeuilFermeture.delaiMin is not null and delaiSeuilFermeture.seuilMax is not null and delaiSeuilFermeture.dateSuppression is  null%}
+            var maxDelai = {{ delaiSeuilFermeture.delaiMin }};
+                    var seuilMin = {{ delaiSeuilFermeture.seuilMax }};
+                    $('input#procash_administrationbundle_delaifermeture_delaiMin').val(maxDelai);
+            $('input#procash_administrationbundle_delaifermeture_seuilMax').val(seuilMin);
+        {% else %}
+            $('input#procash_administrationbundle_delaifermeture_delaiMin').val(0);
+            $('input#procash_administrationbundle_delaifermeture_seuilMax').val(0);
+        {% endif %}
+    </script>
+    <script src="{{ asset('bundles/AdministrationBundle/Referentiels/js/delai_seuil_fermeture.js') }}" type="text/javascript">
+    </script>
+{% endblock %}
